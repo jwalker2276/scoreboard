@@ -1,6 +1,6 @@
 namespace Api.Contracts.Game;
 
-public record CreateGameResponse(
+public record GameResponse(
     Guid Id,
     string Name,
     bool IsActive,
