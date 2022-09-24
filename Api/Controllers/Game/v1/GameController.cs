@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Controllers.Game.v1;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/v1/games")]
 public class GameController : ControllerBase
 {
     [HttpPost]
