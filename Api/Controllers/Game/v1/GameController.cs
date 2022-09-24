@@ -11,37 +11,65 @@ public class GameController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateGame(CreateGameRequest request)
     {
-        var game = new GameResponse(new Guid(), request.Name, true, DateTime.Today, request.CreatedBy);
+        var game = new GameResponse() 
+        {
+            Id = Guid.NewGuid(),
+            Name = request.Name,
+            IsActive = true,
+            CreationDate = DateTime.Today,
+            CreatedBy = request.CreatedBy
+        };
         
-        var response = new StandardObjectResponse<GameResponse>()
+        var mockedResponse = new StandardObjectResponse<GameResponse>()
         {
             Data = game,
             Message = "Successfully created game"
         };
-        var location = new Uri($"https://localhost:5000/api/v1/game/{game.Id}");
         
-        return Created(location, response);
+        return CreatedAtAction(nameof(GetGame), new { id = game.Id}, mockedResponse);
     }
     
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetAGame(Guid id)
+    public async Task<IActionResult> GetGame(Guid id)
     {
-        var game = new GameResponse(new Guid(), "Game 1", true, DateTime.Today, "User 1");
+        var game = new GameResponse() 
+        {
+            Id = id,
+            Name = "Asteroids",
+            IsActive = true,
+            CreationDate = DateTime.Today,
+            CreatedBy = "John Smith"
+        };
         
-        var response = new StandardObjectResponse<GameResponse>()
+        var mockedResponse = new StandardObjectResponse<GameResponse>()
         {
             Data = game,
             Message = "Successfully found game"
         };
         
-        return Ok(response);
+        return Ok(mockedResponse);
     } 
     
     [HttpGet]
     public async Task<IActionResult> GetAllGames()
     {
-        var game1 = new GameResponse(new Guid(), "Game 1", true, DateTime.Today, "User 1");
-        var game2 = new GameResponse(new Guid(), "Game 2", false, DateTime.Today, "User 2");
+        var game1 = new GameResponse() 
+        {
+            Id = Guid.NewGuid(),
+            Name = "Asteroids",
+            IsActive = true,
+            CreationDate = DateTime.Today,
+            CreatedBy = "John Smith"
+        };
+        
+        var game2 = new GameResponse() 
+        {
+            Id = Guid.NewGuid(),
+            Name = "Pac-Man",
+            IsActive = true,
+            CreationDate = DateTime.Today,
+            CreatedBy = "Sam Smith"
+        };
         
         List<GameResponse> games = new List<GameResponse> { game1, game2 };
 
@@ -57,7 +85,14 @@ public class GameController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> UpdateGame(UpdateGameRequest request)
     {
-        var game = new GameResponse(request.Id, request.Name, true, DateTime.Today, "User 1");
+        var game = new GameResponse() 
+        {
+            Id = request.Id,
+            Name = request.Name,
+            IsActive = request.IsActive,
+            CreationDate = DateTime.Today,
+            CreatedBy = "Sam Smith"
+        };
         
         var response = new StandardObjectResponse<GameResponse>()
         {
@@ -71,7 +106,14 @@ public class GameController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteGame(Guid id)
     {
-        var game = new GameResponse(new Guid(), "Game 1", true, DateTime.Today, "User 1");
+        var game = new GameResponse() 
+        {
+            Id = id,
+            Name = "Pac-Man",
+            IsActive = false,
+            CreationDate = DateTime.Today,
+            CreatedBy = "Sam Smith"
+        };
         
         var response = new StandardObjectResponse<GameResponse>()
         {

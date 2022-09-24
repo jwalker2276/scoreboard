@@ -1,7 +1,9 @@
 namespace Api.Contracts.Game;
 
-public record CreateGameRequest(
-    string Name,
-    string CreatedBy
-    );
+public class CreateGameRequest
+{
+    public string Name { get; set; } = String.Empty;
+    
+    public string CreatedBy { get; set; } = String.Empty;
+}
 

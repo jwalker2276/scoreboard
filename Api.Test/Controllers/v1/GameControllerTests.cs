@@ -19,15 +19,19 @@ public class GameControllerTests
     [Fact]
     public async void CreateGame_ShouldReturn201StatusWithExpectedResponse_WhenSuccessful()
     {
-        var mockName = _faker.Person.Company.CatchPhrase;
+        var mockName = "Asteroids";
         var mockUser = _faker.Person.FullName;
-        
-        var mockRequest = new CreateGameRequest(mockName, mockUser);
+
+        var mockRequest = new CreateGameRequest()
+        {
+            Name = mockName,
+            CreatedBy = mockUser
+        };
 
         var controllerUnderTest = new GameController();
         var result = await controllerUnderTest.CreateGame(mockRequest);
 
-        var actualResult = Assert.IsType<CreatedResult>(result);
+        var actualResult = Assert.IsType<CreatedAtActionResult>(result);
         var actualResultData = actualResult.Value as StandardObjectResponse<GameResponse>;
         
         var expectedStatusCode = 201;
@@ -36,11 +40,18 @@ public class GameControllerTests
 
         var expectedResponse = new StandardObjectResponse<GameResponse>()
         {
-            Data = new GameResponse(new Guid(), mockName, true, DateTime.Today, mockUser),
+            Data = new GameResponse()
+            {
+                Id = Guid.NewGuid(),
+                Name = mockName,
+                IsActive = true,
+                CreationDate = DateTime.Today,
+                CreatedBy = mockUser
+            },
             Message = "Successfully created game"
         };
         
-        Assert.Equal(expectedResponse.Data.Id, actualResultData!.Data!.Id);
+        Assert.IsType<Guid>(actualResultData!.Data!.Id);
         Assert.Equal(expectedResponse.Data.Name, actualResultData.Data.Name);
         Assert.Equal(expectedResponse.Data.CreatedBy, actualResultData.Data.CreatedBy);
         Assert.Equal(expectedResponse.Data.CreationDate, actualResultData.Data.CreationDate);
@@ -50,12 +61,12 @@ public class GameControllerTests
     }
     
     [Fact]
-    public async void GetAGame_ShouldReturn200StatusWithExpectedResponse_WhenSuccessful()
+    public async void GetGame_ShouldReturn200StatusWithExpectedResponse_WhenSuccessful()
     {
-        var mockRequest = new Guid();
+        var mockRequest = Guid.NewGuid();
 
         var controllerUnderTest = new GameController();
-        var result = await controllerUnderTest.GetAGame(mockRequest);
+        var result = await controllerUnderTest.GetGame(mockRequest);
 
         var actualResult = Assert.IsType<OkObjectResult>(result);
         var actualResultData = actualResult.Value as StandardObjectResponse<GameResponse>;
@@ -66,7 +77,14 @@ public class GameControllerTests
 
         var expectedResponse = new StandardObjectResponse<GameResponse>()
         {
-            Data = new GameResponse(new Guid(), "Game 1", true, DateTime.Today, "User 1"),
+            Data = new GameResponse()
+            {
+                Id = mockRequest,
+                Name = "Asteroids",
+                IsActive = true,
+                CreationDate = DateTime.Today,
+                CreatedBy = "John Smith"
+            },
             Message = "Successfully found game"
         };
         
@@ -92,8 +110,22 @@ public class GameControllerTests
         var actualStatusCode = actualResult.StatusCode;
         Assert.Equal(expectedStatusCode, actualStatusCode);
 
-        var game1 = new GameResponse(new Guid(), "Game 1", true, DateTime.Today, "User 1");
-        var game2 = new GameResponse(new Guid(), "Game 2", false, DateTime.Today, "User 2");
+        var game1 = new GameResponse()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Asteroids",
+            IsActive = true,
+            CreationDate = DateTime.Today,
+            CreatedBy = "John Smith"
+        };
+        var game2 = new GameResponse()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Pac-Man",
+            IsActive = true,
+            CreationDate = DateTime.Today,
+            CreatedBy = "Sam Smith"
+        };
         
         var expectedResponse = new StandardCollectionResponse<GameResponse>()
         {
@@ -108,7 +140,12 @@ public class GameControllerTests
     [Fact]
     public async void UpdateGame_ShouldReturn200StatusWithExpectedResponse_WhenSuccessful()
     {
-        var mockRequest = new UpdateGameRequest(new Guid(), "Game 3", false);
+        var mockRequest = new UpdateGameRequest()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Defender",
+            IsActive = true,
+        };
 
         var controllerUnderTest = new GameController();
         var result = await controllerUnderTest.UpdateGame(mockRequest);
@@ -122,7 +159,14 @@ public class GameControllerTests
 
         var expectedResponse = new StandardObjectResponse<GameResponse>()
         {
-            Data = new GameResponse(new Guid(), "Game 3", false, DateTime.Today, "User 1"),
+            Data = new GameResponse()
+            {
+                Id = mockRequest.Id,
+                Name = "Defender",
+                IsActive = true,
+                CreationDate = DateTime.Today,
+                CreatedBy = "Sam Smith"
+            },
             Message = "Successfully updated game"
         };
         
@@ -138,10 +182,10 @@ public class GameControllerTests
     [Fact]
     public async void DeleteGame_ShouldReturn200StatusWithExpectedResponse_WhenSuccessful()
     {
-        var mockRequest = new Guid();
+        var mockId = Guid.NewGuid();
 
         var controllerUnderTest = new GameController();
-        var result = await controllerUnderTest.DeleteGame(mockRequest);
+        var result = await controllerUnderTest.DeleteGame(mockId);
 
         var actualResult = Assert.IsType<OkObjectResult>(result);
         var actualResultData = actualResult.Value as StandardObjectResponse<GameResponse>;
@@ -152,7 +196,14 @@ public class GameControllerTests
 
         var expectedResponse = new StandardObjectResponse<GameResponse>()
         {
-            Data = new GameResponse(new Guid(), "Game 1", true, DateTime.Today, "User 1"),
+            Data  = new GameResponse()
+            {
+                Id = mockId,
+                Name = "Pac-Man",
+                IsActive = false,
+                CreationDate = DateTime.Today,
+                CreatedBy = "Sam Smith"
+            },
             Message = "Successfully deleted game"
         };
         
@@ -160,7 +211,7 @@ public class GameControllerTests
         Assert.Equal(expectedResponse.Data.Name, actualResultData.Data.Name);
         Assert.Equal(expectedResponse.Data.CreatedBy, actualResultData.Data.CreatedBy);
         Assert.Equal(expectedResponse.Data.CreationDate, actualResultData.Data.CreationDate);
-        Assert.True(actualResultData.Data.IsActive);
+        Assert.False(actualResultData.Data.IsActive);
         
         Assert.Equal(expectedResponse.Message, actualResultData.Message);
     }
