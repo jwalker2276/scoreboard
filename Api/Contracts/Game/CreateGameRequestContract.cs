@@ -1,6 +1,6 @@
 namespace Api.Contracts.Game;
 
-public class CreateGameRequest
+public class CreateGameRequestContract
 {
     public string Name { get; set; } = String.Empty;
     

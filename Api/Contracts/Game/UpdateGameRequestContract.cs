@@ -1,6 +1,6 @@
 namespace Api.Contracts.Game;
 
-public class UpdateGameRequest
+public class UpdateGameRequestContract
 {
     public Guid Id { get; set; } = Guid.Empty;
     

@@ -1,5 +1,7 @@
 using Api.Contracts.Common;
 using Api.Contracts.Game;
+using Application.Services.GameService.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.Game.v1;
@@ -8,31 +10,43 @@ namespace Api.Controllers.Game.v1;
 [Route("api/v1/games")]
 public class GameController : ControllerBase
 {
-    [HttpPost]
-    public async Task<IActionResult> CreateGame(CreateGameRequest request)
+    private readonly IMediator _mediator;
+
+    public GameController(Mediator mediator)
     {
-        var game = new GameResponse() 
+        _mediator = mediator;
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> CreateGame(CreateGameRequestContract requestContract, CancellationToken token)
+    {
+        var command = new CreateGameCommand()
+            { Name = requestContract.Name, CreatedBy = requestContract.CreatedBy };
+
+        var gameResponse = await _mediator.Send(command, token);
+        
+        var responseData = new GameResponseContract() 
         {
-            Id = Guid.NewGuid(),
-            Name = request.Name,
-            IsActive = true,
-            CreationDate = DateTime.Today,
-            CreatedBy = request.CreatedBy
+            Id = gameResponse.Id,
+            Name = gameResponse.Name,
+            IsActive = gameResponse.IsActive,
+            CreationDate = gameResponse.CreationDate,
+            CreatedBy = gameResponse.CreatedBy
         };
         
-        var mockedResponse = new StandardObjectResponse<GameResponse>()
+        var response = new StandardObjectResponse<GameResponseContract>()
         {
-            Data = game,
+            Data = responseData,
             Message = "Successfully created game"
         };
         
-        return CreatedAtAction(nameof(GetGame), new { id = game.Id}, mockedResponse);
+        return CreatedAtAction(nameof(GetGame), new { id = responseData.Id}, response);
     }
     
     [HttpGet("{id}")]
     public async Task<IActionResult> GetGame(Guid id)
     {
-        var game = new GameResponse() 
+        var game = new GameResponseContract() 
         {
             Id = id,
             Name = "Asteroids",
@@ -41,7 +55,7 @@ public class GameController : ControllerBase
             CreatedBy = "John Smith"
         };
         
-        var mockedResponse = new StandardObjectResponse<GameResponse>()
+        var mockedResponse = new StandardObjectResponse<GameResponseContract>()
         {
             Data = game,
             Message = "Successfully found game"
@@ -53,7 +67,7 @@ public class GameController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllGames()
     {
-        var game1 = new GameResponse() 
+        var game1 = new GameResponseContract() 
         {
             Id = Guid.NewGuid(),
             Name = "Asteroids",
@@ -62,7 +76,7 @@ public class GameController : ControllerBase
             CreatedBy = "John Smith"
         };
         
-        var game2 = new GameResponse() 
+        var game2 = new GameResponseContract() 
         {
             Id = Guid.NewGuid(),
             Name = "Pac-Man",
@@ -71,9 +85,9 @@ public class GameController : ControllerBase
             CreatedBy = "Sam Smith"
         };
         
-        List<GameResponse> games = new List<GameResponse> { game1, game2 };
+        List<GameResponseContract> games = new List<GameResponseContract> { game1, game2 };
 
-        var response = new StandardCollectionResponse<GameResponse>()
+        var response = new StandardCollectionResponse<GameResponseContract>()
         {
             Data = games,
             Message = "Successfully found games"
@@ -83,18 +97,18 @@ public class GameController : ControllerBase
     }
     
     [HttpPut]
-    public async Task<IActionResult> UpdateGame(UpdateGameRequest request)
+    public async Task<IActionResult> UpdateGame(UpdateGameRequestContract requestContract)
     {
-        var game = new GameResponse() 
+        var game = new GameResponseContract() 
         {
-            Id = request.Id,
-            Name = request.Name,
-            IsActive = request.IsActive,
+            Id = requestContract.Id,
+            Name = requestContract.Name,
+            IsActive = requestContract.IsActive,
             CreationDate = DateTime.Today,
             CreatedBy = "Sam Smith"
         };
         
-        var response = new StandardObjectResponse<GameResponse>()
+        var response = new StandardObjectResponse<GameResponseContract>()
         {
             Data = game,
             Message = "Successfully updated game"
@@ -106,7 +120,7 @@ public class GameController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteGame(Guid id)
     {
-        var game = new GameResponse() 
+        var game = new GameResponseContract() 
         {
             Id = id,
             Name = "Pac-Man",
@@ -115,7 +129,7 @@ public class GameController : ControllerBase
             CreatedBy = "Sam Smith"
         };
         
-        var response = new StandardObjectResponse<GameResponse>()
+        var response = new StandardObjectResponse<GameResponseContract>()
         {
             Data = game,
             Message = "Successfully deleted game"

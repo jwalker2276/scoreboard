@@ -1,4 +1,4 @@
-namespace Api.Contracts.Game;
+namespace Application.Services.GameService.Common;
 
 public class GameResponse
 {
@@ -8,7 +8,7 @@ public class GameResponse
 
     public bool IsActive { get; set; } = true;
         
-    public DateTime CreationDate { get; set; } = DateTime.Now;
+    public DateTimeOffset CreationDate { get; set; } = DateTime.Now;
     
     public string CreatedBy { get; set; } = String.Empty;
 }

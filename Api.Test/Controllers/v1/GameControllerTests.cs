@@ -22,7 +22,7 @@ public class GameControllerTests
         var mockName = "Asteroids";
         var mockUser = _faker.Person.FullName;
 
-        var mockRequest = new CreateGameRequest()
+        var mockRequest = new CreateGameRequestContract()
         {
             Name = mockName,
             CreatedBy = mockUser
@@ -32,15 +32,15 @@ public class GameControllerTests
         var result = await controllerUnderTest.CreateGame(mockRequest);
 
         var actualResult = Assert.IsType<CreatedAtActionResult>(result);
-        var actualResultData = actualResult.Value as StandardObjectResponse<GameResponse>;
+        var actualResultData = actualResult.Value as StandardObjectResponse<GameResponseContract>;
         
         var expectedStatusCode = 201;
         var actualStatusCode = actualResult.StatusCode;
         Assert.Equal(expectedStatusCode, actualStatusCode);
 
-        var expectedResponse = new StandardObjectResponse<GameResponse>()
+        var expectedResponse = new StandardObjectResponse<GameResponseContract>()
         {
-            Data = new GameResponse()
+            Data = new GameResponseContract()
             {
                 Id = Guid.NewGuid(),
                 Name = mockName,
@@ -69,15 +69,15 @@ public class GameControllerTests
         var result = await controllerUnderTest.GetGame(mockRequest);
 
         var actualResult = Assert.IsType<OkObjectResult>(result);
-        var actualResultData = actualResult.Value as StandardObjectResponse<GameResponse>;
+        var actualResultData = actualResult.Value as StandardObjectResponse<GameResponseContract>;
         
         var expectedStatusCode = 200;
         var actualStatusCode = actualResult.StatusCode;
         Assert.Equal(expectedStatusCode, actualStatusCode);
 
-        var expectedResponse = new StandardObjectResponse<GameResponse>()
+        var expectedResponse = new StandardObjectResponse<GameResponseContract>()
         {
-            Data = new GameResponse()
+            Data = new GameResponseContract()
             {
                 Id = mockRequest,
                 Name = "Asteroids",
@@ -104,13 +104,13 @@ public class GameControllerTests
         var result = await controllerUnderTest.GetAllGames();
 
         var actualResult = Assert.IsType<OkObjectResult>(result);
-        var actualResultData = actualResult.Value as StandardCollectionResponse<GameResponse>;
+        var actualResultData = actualResult.Value as StandardCollectionResponse<GameResponseContract>;
 
         var expectedStatusCode = 200;
         var actualStatusCode = actualResult.StatusCode;
         Assert.Equal(expectedStatusCode, actualStatusCode);
 
-        var game1 = new GameResponse()
+        var game1 = new GameResponseContract()
         {
             Id = Guid.NewGuid(),
             Name = "Asteroids",
@@ -118,7 +118,7 @@ public class GameControllerTests
             CreationDate = DateTime.Today,
             CreatedBy = "John Smith"
         };
-        var game2 = new GameResponse()
+        var game2 = new GameResponseContract()
         {
             Id = Guid.NewGuid(),
             Name = "Pac-Man",
@@ -127,9 +127,9 @@ public class GameControllerTests
             CreatedBy = "Sam Smith"
         };
         
-        var expectedResponse = new StandardCollectionResponse<GameResponse>()
+        var expectedResponse = new StandardCollectionResponse<GameResponseContract>()
         {
-            Data = new List<GameResponse>() { game1, game2},
+            Data = new List<GameResponseContract>() { game1, game2},
             Message = "Successfully found games"
         };
 
@@ -140,7 +140,7 @@ public class GameControllerTests
     [Fact]
     public async void UpdateGame_ShouldReturn200StatusWithExpectedResponse_WhenSuccessful()
     {
-        var mockRequest = new UpdateGameRequest()
+        var mockRequest = new UpdateGameRequestContract()
         {
             Id = Guid.NewGuid(),
             Name = "Defender",
@@ -151,15 +151,15 @@ public class GameControllerTests
         var result = await controllerUnderTest.UpdateGame(mockRequest);
 
         var actualResult = Assert.IsType<OkObjectResult>(result);
-        var actualResultData = actualResult.Value as StandardObjectResponse<GameResponse>;
+        var actualResultData = actualResult.Value as StandardObjectResponse<GameResponseContract>;
         
         var expectedStatusCode = 200;
         var actualStatusCode = actualResult.StatusCode;
         Assert.Equal(expectedStatusCode, actualStatusCode);
 
-        var expectedResponse = new StandardObjectResponse<GameResponse>()
+        var expectedResponse = new StandardObjectResponse<GameResponseContract>()
         {
-            Data = new GameResponse()
+            Data = new GameResponseContract()
             {
                 Id = mockRequest.Id,
                 Name = "Defender",
@@ -188,15 +188,15 @@ public class GameControllerTests
         var result = await controllerUnderTest.DeleteGame(mockId);
 
         var actualResult = Assert.IsType<OkObjectResult>(result);
-        var actualResultData = actualResult.Value as StandardObjectResponse<GameResponse>;
+        var actualResultData = actualResult.Value as StandardObjectResponse<GameResponseContract>;
         
         var expectedStatusCode = 200;
         var actualStatusCode = actualResult.StatusCode;
         Assert.Equal(expectedStatusCode, actualStatusCode);
 
-        var expectedResponse = new StandardObjectResponse<GameResponse>()
+        var expectedResponse = new StandardObjectResponse<GameResponseContract>()
         {
-            Data  = new GameResponse()
+            Data  = new GameResponseContract()
             {
                 Id = mockId,
                 Name = "Pac-Man",
