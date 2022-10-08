@@ -1,12 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{1470BF85-AAF7-4550-BAE1-E46E5C2DB1E4}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32819.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{1470BF85-AAF7-4550-BAE1-E46E5C2DB1E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Test", "Api.Test\Api.Test.csproj", "{5E8EC056-EBB9-409A-8A76-CE403EA74FF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Test", "Api.Test\Api.Test.csproj", "{5E8EC056-EBB9-409A-8A76-CE403EA74FF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{549B2AEA-44DE-49E6-8578-E99601F346B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{549B2AEA-44DE-49E6-8578-E99601F346B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{4C6C2FAC-EA84-410C-8A8C-A64C756AF982}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{4C6C2FAC-EA84-410C-8A8C-A64C756AF982}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E47AF1CA-234B-4C76-ADEC-C62BD7B4B1DA}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +38,11 @@ Global
 		{4C6C2FAC-EA84-410C-8A8C-A64C756AF982}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C6C2FAC-EA84-410C-8A8C-A64C756AF982}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C6C2FAC-EA84-410C-8A8C-A64C756AF982}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2E876D64-AA67-4A58-B6BC-07ECFA4EC0F5}
 	EndGlobalSection
 EndGlobal

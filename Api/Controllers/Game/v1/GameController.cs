@@ -1,6 +1,7 @@
 using Api.Contracts.Common;
 using Api.Contracts.Game;
 using Application.Game.Commands;
+using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +22,7 @@ public class GameController : ControllerBase
     public async Task<IActionResult> CreateGame(CreateStandardGameRequest request, CancellationToken token)
     {
         var command = new CreateGameCommand(request.Name, request.CreatedBy);
-        var gameResponse = await _mediator.Send(command, token);
+        StandardGame gameResponse = await _mediator.Send(command, token);
         
         var responseData = new GameResponse() 
         {
@@ -83,7 +84,7 @@ public class GameController : ControllerBase
             CreatedBy = "Sam Smith"
         };
         
-        List<GameResponse> games = new List<GameResponse> { game1, game2 };
+        var games = new List<GameResponse> { game1, game2 };
 
         var response = new StandardCollectionResponse<GameResponse>()
         {
