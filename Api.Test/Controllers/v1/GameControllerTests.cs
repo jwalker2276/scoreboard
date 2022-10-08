@@ -14,14 +14,12 @@ public class GameControllerTests
 {
     private readonly Faker _faker;
 
-    private readonly IMediator _mediator;
+    private readonly IMediator _mediator = Substitute.For<IMediator>();
 
     public GameControllerTests()
     {
         Randomizer.Seed = new Random(8675309);
         _faker = new Faker();
-
-        _mediator = Substitute.For<IMediator>();
     }
 
     [Fact]
@@ -72,6 +70,12 @@ public class GameControllerTests
         Assert.Equal(expectedResponse.Data.CreationDate, actualResultData.Data.CreationDate);
         Assert.True(actualResultData.Data.IsActive);
         Assert.Equal(expectedResponse.Message, actualResultData.Message);
+
+        await _mediator.Received(1).Send(
+            Arg.Is<CreateGameCommand>(
+                command => command.Name == mockName &&
+                command.CreatedBy == mockUser),
+            Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -107,7 +111,6 @@ public class GameControllerTests
         Assert.Equal(expectedResponse.Data.CreatedBy, actualResultData.Data.CreatedBy);
         Assert.Equal(expectedResponse.Data.CreationDate, actualResultData.Data.CreationDate);
         Assert.True(actualResultData.Data.IsActive);
-
         Assert.Equal(expectedResponse.Message, actualResultData.Message);
     }
 
