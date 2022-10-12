@@ -1,9 +1,11 @@
 using Application;
+using Infrastructure;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplication();
+builder.Services.AddInfrastucture();
 builder.Services.AddControllers();
 builder.Services.AddRouting(options =>
 {

@@ -1,3 +1,4 @@
+using Application.Persistence;
 using Domain.Entities;
 using MediatR;
 
@@ -5,11 +6,21 @@ namespace Application.Game.Commands;
 
 public class CreateGameHandler : IRequestHandler<CreateGameCommand, StandardGame>
 {
+    private readonly IGameRepository _gameRepository;
+
+    public CreateGameHandler(IGameRepository gameRepository)
+    {
+        _gameRepository = gameRepository;
+    }
+
     public async Task<StandardGame> Handle(CreateGameCommand command, CancellationToken cancellationToken)
     {
-        // Call database interface
-        var mockResponse = Task.FromResult(new StandardGame(Guid.NewGuid(), command.Name, true, command.CreatedBy));
+        var id = Guid.NewGuid();
 
-        return await mockResponse;
+        var game = new StandardGame(id, command.Name, true, command.CreatedBy);
+
+        StandardGame createdGame = await _gameRepository.Add(game);
+
+        return createdGame;
     }
 }
