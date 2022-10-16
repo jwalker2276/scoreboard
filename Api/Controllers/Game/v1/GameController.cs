@@ -1,5 +1,6 @@
 using Api.Contracts.Common;
 using Api.Contracts.Game;
+using Api.Controllers.Common;
 using Application.Game.Commands;
 using Domain.Entities;
 using ErrorOr;
@@ -8,9 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.Game.v1;
 
-[ApiController]
 [Route("api/v1/games")]
-public class GameController : ControllerBase
+public class GameController : ApiController
 {
     private readonly IMediator _mediator;
 
@@ -30,7 +30,7 @@ public class GameController : ControllerBase
             CreatedAtAction(nameof(GetGame),
                             new { id = createResult.Id },
                             new StandardResponse<GameResponse>(new GameResponse(createResult), messageForResponse)),
-            _ => Problem(statusCode: StatusCodes.Status409Conflict, title: "Game already exist"));
+            errors => Problem(errors));
     }
 
     [HttpGet("{id}")]
