@@ -1,3 +1,5 @@
+using Domain.Entities;
+
 namespace Api.Contracts.Game;
 
 public class GameResponse
@@ -11,4 +13,17 @@ public class GameResponse
     public DateTimeOffset CreationDate { get; init; }
     
     public string CreatedBy { get; init; } = String.Empty;
+
+    public GameResponse()
+    {
+    }
+
+    public GameResponse(StandardGame game)
+    {
+        Id = game.Id;
+        Name = game.Name;
+        IsActive = game.IsActive;
+        CreationDate = game.CreationDate;
+        CreatedBy = game.CreatedBy;
+    }
 }

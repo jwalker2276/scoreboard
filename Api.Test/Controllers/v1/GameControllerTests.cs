@@ -4,6 +4,7 @@ using Api.Controllers.Game.v1;
 using Application.Game.Commands;
 using Bogus;
 using Domain.Entities;
+using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
@@ -29,15 +30,17 @@ public class GameControllerTests
         var mockUser = _faker.Person.FullName;
         var mockId = Guid.NewGuid();
 
-        var commandResponse = new StandardGame(mockId, mockName, true, mockUser);
+        var commandResponseDate = new StandardGame(mockId, mockName, true, mockUser);
+        ErrorOr<StandardGame> commandResponse = commandResponseDate;
+
 
         var expectedData = new GameResponse
         {
-            Id = commandResponse.Id,
-            Name = commandResponse.Name,
-            IsActive = commandResponse.IsActive,
-            CreationDate = commandResponse.CreationDate,
-            CreatedBy = commandResponse.CreatedBy,
+            Id = commandResponseDate.Id,
+            Name = commandResponseDate.Name,
+            IsActive = commandResponseDate.IsActive,
+            CreationDate = commandResponseDate.CreationDate,
+            CreatedBy = commandResponseDate.CreatedBy,
         };
 
         var expectedResponse = new StandardObjectResponse<GameResponse>()
@@ -58,7 +61,7 @@ public class GameControllerTests
 
         IActionResult result = await controllerUnderTest.CreateGame(mockRequest, CancellationToken.None);
         CreatedAtActionResult actualResult = Assert.IsType<CreatedAtActionResult>(result);
-        var actualResultData = actualResult.Value as StandardObjectResponse<GameResponse>;
+        var actualResultData = actualResult.Value as StandardResponse<GameResponse>;
         int? actualStatusCode = actualResult.StatusCode;
 
         var expectedStatusCode = 201;

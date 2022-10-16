@@ -1,10 +1,12 @@
 using Application.Persistence;
 using Domain.Entities;
+using Domain.Errors;
+using ErrorOr;
 using MediatR;
 
 namespace Application.Game.Commands;
 
-public class CreateGameHandler : IRequestHandler<CreateGameCommand, StandardGame>
+public class CreateGameHandler : IRequestHandler<CreateGameCommand, ErrorOr<StandardGame>>
 {
     private readonly IGameRepository _gameRepository;
 
@@ -13,7 +15,7 @@ public class CreateGameHandler : IRequestHandler<CreateGameCommand, StandardGame
         _gameRepository = gameRepository;
     }
 
-    public async Task<StandardGame> Handle(CreateGameCommand command, CancellationToken cancellationToken)
+    public async Task<ErrorOr<StandardGame>> Handle(CreateGameCommand command, CancellationToken cancellationToken)
     {
         var id = Guid.NewGuid();
 
@@ -21,6 +23,8 @@ public class CreateGameHandler : IRequestHandler<CreateGameCommand, StandardGame
 
         StandardGame createdGame = await _gameRepository.Add(game);
 
-        return createdGame;
+        return Errors.Game.NotFound;
+
+        //return createdGame;
     }
 }
