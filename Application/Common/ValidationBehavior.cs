@@ -27,7 +27,6 @@ namespace Application.Common
                 return await next();
             }
 
-
             ValidationResult validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
             if (validationResult.IsValid)
