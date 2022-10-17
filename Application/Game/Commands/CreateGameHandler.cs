@@ -1,6 +1,5 @@
 using Application.Persistence;
 using Domain.Entities;
-using Domain.Errors;
 using ErrorOr;
 using MediatR;
 
@@ -23,8 +22,6 @@ public class CreateGameHandler : IRequestHandler<CreateGameCommand, ErrorOr<Stan
 
         StandardGame createdGame = await _gameRepository.Add(game);
 
-        return Errors.Game.NotFound;
-
-        //return createdGame;
+        return createdGame;
     }
 }

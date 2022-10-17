@@ -51,8 +51,9 @@ namespace Api.Errors
             string? instance = null)
         {
             statusCode ??= 400;
+            title ??= "One or more validation errors occurred.";
 
-            var validationProblemDetails = new ValidationProblemDetails
+            var validationProblemDetails = new ValidationProblemDetails(modelStateDictionary)
             {
                 Status = statusCode,
                 Title = title,

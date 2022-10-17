@@ -14,10 +14,6 @@ namespace Domain.Errors
                 code: "Game.Invalid",
                 description: "Game details invalid.");
 
-            public static Error NotFound => Error.Validation(
-                code: "Game.NotFound",
-                description: "Game not found.");
-
             public static Error CreateError => Error.Failure(
                 code: "Game.CreateError",
                 description: "Failed to create game");
