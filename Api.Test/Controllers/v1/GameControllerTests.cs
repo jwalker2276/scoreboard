@@ -15,7 +15,7 @@ public class GameControllerTests
 {
     private readonly Faker _faker;
 
-    private readonly IMediator _mediator = Substitute.For<IMediator>();
+    private readonly ISender _mediator = Substitute.For<ISender>();
 
     public GameControllerTests()
     {

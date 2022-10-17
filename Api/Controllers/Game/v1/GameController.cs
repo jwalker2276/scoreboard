@@ -12,9 +12,9 @@ namespace Api.Controllers.Game.v1;
 [Route("api/v1/games")]
 public class GameController : ApiController
 {
-    private readonly IMediator _mediator;
+    private readonly ISender _mediator;
 
-    public GameController(IMediator mediator)
+    public GameController(ISender mediator)
     {
         _mediator = mediator;
     }
