@@ -1,10 +1,9 @@
-using Domain.Entities;
 using ErrorOr;
 using MediatR;
 
-namespace Application.Game.Commands;
+namespace Application.GameOperations.Commands;
 
-public class CreateGameCommand : IRequest<ErrorOr<StandardGame>>
+public class CreateGameCommand : IRequest<ErrorOr<Domain.Entities.Game>>
 {
     public string Name { get; init; }
 

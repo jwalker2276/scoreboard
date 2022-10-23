@@ -1,8 +1,7 @@
 using Api.Contracts.Common;
 using Api.Contracts.Game;
 using Api.Controllers.Common;
-using Application.Game.Commands;
-using Domain.Entities;
+using Application.GameOperations.Commands;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +22,7 @@ public class GameController : ApiController
     public async Task<IActionResult> CreateGame(CreateStandardGameRequest request, CancellationToken token)
     {
         var command = new CreateGameCommand(request.Name, request.CreatedBy);
-        ErrorOr<StandardGame> createResult = await _mediator.Send(command, token);
+        ErrorOr<Domain.Entities.Game> createResult = await _mediator.Send(command, token);
         var messageForResponse = "Successfully created game";
 
         return createResult.Match(createResult =>

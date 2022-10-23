@@ -2,9 +2,9 @@
 
 namespace Domain.Abstractions;
 
-public abstract class Game : Entity
+public abstract class GameBase : Entity
 {
-    protected Game(Guid id, string name, bool isActive, string createdBy) : base(id)
+    protected GameBase(Guid id, string name, bool isActive, string createdBy) : base(id)
     {
         Name = name;
         IsActive = isActive;
@@ -15,8 +15,8 @@ public abstract class Game : Entity
     public string Name { get; init; }
 
     public bool IsActive { get; init; }
-        
+
     public DateTimeOffset CreationDate { get; init; }
-    
+
     public string CreatedBy { get; init; }
 }

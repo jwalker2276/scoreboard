@@ -5,16 +5,16 @@ namespace Infrastructure.Persistence
 {
     internal class GameRepository : IGameRepository
     {
-        private static List<StandardGame> _games = new List<StandardGame>();
+        private static List<Game> _games = new List<Game>();
 
-        public Task<StandardGame> Add(StandardGame game)
+        public Task<Game> Add(Game game)
         {
             _games.Add(game);
 
             return Task.FromResult(game);
         }
 
-        public Task<StandardGame?> GetGameById(Guid id)
+        public Task<Game?> GetGameById(Guid id)
         {
             return Task.FromResult(_games.SingleOrDefault(game => game.Id == id));
         }

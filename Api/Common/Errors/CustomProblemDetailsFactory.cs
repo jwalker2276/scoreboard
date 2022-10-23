@@ -1,4 +1,4 @@
-﻿using Api.Common.HttpContextItemKeys;
+﻿using Api.Common.Http;
 using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 
-namespace Api.Errors
+namespace Api.Common.Errors
 {
     public class CustomProblemDetailsFactory : ProblemDetailsFactory
     {
@@ -71,7 +71,7 @@ namespace Api.Errors
         {
             problemDetails.Status ??= statusCode;
 
-            if (_options.ClientErrorMapping.TryGetValue(statusCode, out var clientErrorData))
+            if (_options.ClientErrorMapping.TryGetValue(statusCode, out ClientErrorData? clientErrorData))
             {
                 problemDetails.Title ??= clientErrorData.Title;
                 problemDetails.Type ??= clientErrorData.Link;
@@ -85,7 +85,7 @@ namespace Api.Errors
 
             var errors = httpContext?.Items[HttpContextItemKeys.Errors] as List<Error>;
 
-            if(errors is not null)
+            if (errors is not null)
             {
                 problemDetails.Extensions.Add("errorCodes", errors.Select(e => e.Code));
             }

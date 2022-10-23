@@ -6,6 +6,6 @@ public abstract class Entity
     {
         Id = id;
     }
-    
+
     public Guid Id { get; private init; }
 }

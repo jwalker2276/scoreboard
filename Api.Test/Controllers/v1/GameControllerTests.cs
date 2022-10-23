@@ -1,7 +1,7 @@
 using Api.Contracts.Common;
 using Api.Contracts.Game;
 using Api.Controllers.Game.v1;
-using Application.Game.Commands;
+using Application.GameOperations.Commands;
 using Bogus;
 using Domain.Entities;
 using ErrorOr;
@@ -30,8 +30,8 @@ public class GameControllerTests
         var mockUser = _faker.Person.FullName;
         var mockId = Guid.NewGuid();
 
-        var commandResponseDate = new StandardGame(mockId, mockName, true, mockUser);
-        ErrorOr<StandardGame> commandResponse = commandResponseDate;
+        var commandResponseDate = new Game(mockId, mockName, true, mockUser);
+        ErrorOr<Game> commandResponse = commandResponseDate;
 
 
         var expectedData = new GameResponse
@@ -62,7 +62,7 @@ public class GameControllerTests
         IActionResult result = await controllerUnderTest.CreateGame(mockRequest, CancellationToken.None);
         CreatedAtActionResult actualResult = Assert.IsType<CreatedAtActionResult>(result);
         var actualResultData = actualResult.Value as StandardResponse<GameResponse>;
-        int? actualStatusCode = actualResult.StatusCode;
+        var actualStatusCode = actualResult.StatusCode;
 
         var expectedStatusCode = 201;
 

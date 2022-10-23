@@ -1,4 +1,4 @@
-using Api.Errors;
+using Api.Common.Errors;
 using Application;
 using Infrastructure;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Models;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplication();
-builder.Services.AddInfrastucture();
+builder.Services.AddInfrastucture(builder.Configuration);
 builder.Services.AddControllers();
 
 builder.Services.AddRouting(options =>

@@ -1,11 +1,9 @@
-﻿using Domain.Entities;
-
-namespace Application.Persistence
+﻿namespace Application.Persistence
 {
     public interface IGameRepository
     {
-        public Task<StandardGame> Add(StandardGame game);
+        public Task<Domain.Entities.Game> Add(Domain.Entities.Game game);
 
-        public Task<StandardGame?> GetGameById(Guid id);
+        public Task<Domain.Entities.Game?> GetGameById(Guid id);
     }
 }
