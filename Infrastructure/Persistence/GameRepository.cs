@@ -1,21 +1,27 @@
 ﻿using Application.Persistence;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
 internal class GameRepository : IGameRepository
 {
-    private static List<Game> _games = new();
+    private readonly DatabaseContext _databaseContext;
 
-    public Task<Game> Add(Game game)
+    public GameRepository(DatabaseContext databaseContext)
     {
-        _games.Add(game);
+        _databaseContext = databaseContext;
+    }
+
+    public Task<Game> Add(Game game, CancellationToken cancellationToken)
+    {
+        _databaseContext.Add(game);
 
         return Task.FromResult(game);
     }
 
-    public Task<Game?> GetGameById(Guid id)
+    public async Task<Game?> GetGameById(Guid id, CancellationToken cancellationToken)
     {
-        return Task.FromResult(_games.SingleOrDefault(game => game.Id == id));
+        return await _databaseContext.Set<Game>().FirstOrDefaultAsync(game => game.Id == id, cancellationToken);
     }
 }

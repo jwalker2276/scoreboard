@@ -17,10 +17,9 @@ public class CreateGameHandler : IRequestHandler<CreateGameCommand, ErrorOr<Game
     public async Task<ErrorOr<Game>> Handle(CreateGameCommand command, CancellationToken cancellationToken)
     {
         var id = Guid.NewGuid();
-
         var game = new Game(id, command.Name, true, command.CreatedBy);
 
-        Game createdGame = await _gameRepository.Add(game);
+        Game createdGame = await _gameRepository.Add(game, cancellationToken);
 
         return createdGame;
     }
