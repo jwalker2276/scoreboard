@@ -1,22 +1,24 @@
-namespace Api.Contracts.Game;
+using Domain.Entities;
+
+namespace Api.Contracts.GameDTO;
 
 public class GameResponse
 {
     public Guid Id { get; init; }
 
-    public string Name { get; init; } = String.Empty;
+    public string Name { get; init; } = string.Empty;
 
     public bool IsActive { get; init; }
 
     public DateTimeOffset CreationDate { get; init; }
 
-    public string CreatedBy { get; init; } = String.Empty;
+    public string CreatedBy { get; init; } = string.Empty;
 
     public GameResponse()
     {
     }
 
-    public GameResponse(Domain.Entities.Game game)
+    public GameResponse(Game game)
     {
         Id = game.Id;
         Name = game.Name;

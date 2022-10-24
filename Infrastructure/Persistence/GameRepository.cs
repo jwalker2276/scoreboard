@@ -1,22 +1,21 @@
 ﻿using Application.Persistence;
 using Domain.Entities;
 
-namespace Infrastructure.Persistence
+namespace Infrastructure.Persistence;
+
+internal class GameRepository : IGameRepository
 {
-    internal class GameRepository : IGameRepository
+    private static List<Game> _games = new();
+
+    public Task<Game> Add(Game game)
     {
-        private static List<Game> _games = new List<Game>();
+        _games.Add(game);
 
-        public Task<Game> Add(Game game)
-        {
-            _games.Add(game);
+        return Task.FromResult(game);
+    }
 
-            return Task.FromResult(game);
-        }
-
-        public Task<Game?> GetGameById(Guid id)
-        {
-            return Task.FromResult(_games.SingleOrDefault(game => game.Id == id));
-        }
+    public Task<Game?> GetGameById(Guid id)
+    {
+        return Task.FromResult(_games.SingleOrDefault(game => game.Id == id));
     }
 }

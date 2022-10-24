@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Models;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplication();
-builder.Services.AddInfrastucture(builder.Configuration);
+builder.Services.AddInfrastucture();
 builder.Services.AddControllers();
 
 builder.Services.AddRouting(options =>
@@ -19,25 +19,22 @@ builder.Services.AddRouting(options =>
 builder.Services.AddTransient<ProblemDetailsFactory, CustomProblemDetailsFactory>();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
+builder.Services.AddSwaggerGen(options => options.SwaggerDoc("v1", new OpenApiInfo
 {
-    options.SwaggerDoc("v1", new OpenApiInfo
+    Version = "v1",
+    Title = "Score Board",
+    Description = "A web api for saving player scores into a database.",
+    Contact = new OpenApiContact
     {
-        Version = "v1",
-        Title = "Score Board",
-        Description = "A web api for saving player scores into a database.",
-        Contact = new OpenApiContact
-        {
-            Name = "Jordan Walker",
-            Url = new Uri("https://github.com/jwalker2276")
-        },
-        License = new OpenApiLicense
-        {
-            Name = "MIT License",
-            Url = new Uri("https://github.com/jwalker2276/scoreboard/blob/master/LICENSE")
-        }
-    });
-});
+        Name = "Jordan Walker",
+        Url = new Uri("https://github.com/jwalker2276")
+    },
+    License = new OpenApiLicense
+    {
+        Name = "MIT License",
+        Url = new Uri("https://github.com/jwalker2276/scoreboard/blob/master/LICENSE")
+    }
+}));
 
 WebApplication app = builder.Build();
 

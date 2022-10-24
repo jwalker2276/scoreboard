@@ -1,6 +1,6 @@
-using Api.Contracts.Common;
-using Api.Contracts.Game;
-using Api.Controllers.Game.v1;
+using Api.Contracts.CommonDTO;
+using Api.Contracts.GameDTO;
+using Api.Controllers.GameController.v1;
 using Application.GameOperations.Commands;
 using Bogus;
 using Domain.Entities;

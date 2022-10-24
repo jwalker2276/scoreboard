@@ -1,12 +1,13 @@
-using Api.Contracts.Common;
-using Api.Contracts.Game;
+using Api.Contracts.CommonDTO;
+using Api.Contracts.GameDTO;
 using Api.Controllers.Common;
 using Application.GameOperations.Commands;
+using Domain.Entities;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers.Game.v1;
+namespace Api.Controllers.GameController.v1;
 
 [Route("api/v1/games")]
 public class GameController : ApiController
@@ -22,7 +23,9 @@ public class GameController : ApiController
     public async Task<IActionResult> CreateGame(CreateStandardGameRequest request, CancellationToken token)
     {
         var command = new CreateGameCommand(request.Name, request.CreatedBy);
-        ErrorOr<Domain.Entities.Game> createResult = await _mediator.Send(command, token);
+
+        ErrorOr<Game> createResult = await _mediator.Send(command, token);
+
         var messageForResponse = "Successfully created game";
 
         return createResult.Match(createResult =>
