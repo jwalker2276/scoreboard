@@ -4,24 +4,40 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
-internal class GameRepository : IGameRepository
+internal class GameRepository : IRepository<Game>
 {
     private readonly DatabaseContext _databaseContext;
+
+    private readonly DbSet<Game> _dbSet;
 
     public GameRepository(DatabaseContext databaseContext)
     {
         _databaseContext = databaseContext;
+        _dbSet = _databaseContext.Set<Game>();
     }
 
-    public Task<Game> Add(Game game, CancellationToken cancellationToken)
+    public void Create(Game game)
     {
-        _databaseContext.Add(game);
-
-        return Task.FromResult(game);
+        _dbSet.Add(game);
     }
 
-    public async Task<Game?> GetGameById(Guid id, CancellationToken cancellationToken)
+    public IEnumerable<Game> GetAll()
     {
-        return await _databaseContext.Set<Game>().FirstOrDefaultAsync(game => game.Id == id, cancellationToken);
+        return _dbSet.ToList();
+    }
+
+    public Game? GetById(Guid id)
+    {
+        return _dbSet.Find(id);
+    }
+
+    public void Update(Game game)
+    {
+        _dbSet.Update(game);
+    }
+
+    public void Delete(Game game)
+    {
+        _dbSet.Remove(game);
     }
 }

@@ -7,11 +7,13 @@ namespace Application.GameOperations.Commands;
 
 public class CreateGameHandler : IRequestHandler<CreateGameCommand, ErrorOr<Game>>
 {
-    private readonly IGameRepository _gameRepository;
+    private readonly IRepository<Game> _gameRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateGameHandler(IGameRepository gameRepository)
+    public CreateGameHandler(IRepository<Game> gameRepository, IUnitOfWork unitOfWork)
     {
         _gameRepository = gameRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<ErrorOr<Game>> Handle(CreateGameCommand command, CancellationToken cancellationToken)
@@ -19,8 +21,10 @@ public class CreateGameHandler : IRequestHandler<CreateGameCommand, ErrorOr<Game
         var id = Guid.NewGuid();
         var game = new Game(id, command.Name, true, command.CreatedBy);
 
-        Game createdGame = await _gameRepository.Add(game, cancellationToken);
+        _gameRepository.Create(game);
 
-        return createdGame;
+        await _unitOfWork.SaveAsync(cancellationToken);
+
+        return game;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Application.Persistence;
+using Domain.Entities;
 using Infrastructure.Options;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -25,14 +26,13 @@ public static class DependencyInjection
 
             });
 
-
-
             dbContextOptionsBuilder.EnableDetailedErrors(databaseOptions.EnableDetailedError);
 
             dbContextOptionsBuilder.EnableSensitiveDataLogging(databaseOptions.EnableSensitiveDataLogging);
         });
 
-        services.AddScoped<IGameRepository, GameRepository>();
+        services.AddScoped<IRepository<Game>, GameRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }
