@@ -1,11 +1,12 @@
 using Application.Persistence;
 using Domain.Entities;
+using Domain.Errors;
 using ErrorOr;
 using MediatR;
 
 namespace Application.GameOperations.Commands;
 
-public class CreateGameHandler : IRequestHandler<CreateGameCommand, ErrorOr<Game>>
+internal sealed class CreateGameHandler : IRequestHandler<CreateGameCommand, ErrorOr<Game>>
 {
     private readonly IRepository<Game> _gameRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -23,8 +24,8 @@ public class CreateGameHandler : IRequestHandler<CreateGameCommand, ErrorOr<Game
 
         _gameRepository.Create(game);
 
-        await _unitOfWork.SaveAsync(cancellationToken);
+        var hasErrorOccurred = await _unitOfWork.SaveAsync(cancellationToken);
 
-        return game;
+        return hasErrorOccurred ? (ErrorOr<Game>)Errors.Game.CreateError : (ErrorOr<Game>)game;
     }
 }

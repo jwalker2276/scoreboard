@@ -12,9 +12,19 @@ internal class UnitOfWork : IUnitOfWork
         _databaseContext = databaseContext;
     }
 
-    public async Task SaveAsync(CancellationToken cancellationToken)
+    public async Task<bool> SaveAsync(CancellationToken cancellationToken)
     {
-        await _databaseContext.SaveChangesAsync(cancellationToken);
+        try
+        {
+            await _databaseContext.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception)
+        {
+            // TODO: Log exception
+            return true;
+        }
+
+        return false;
     }
 
     protected virtual void Dispose(bool disposing)
