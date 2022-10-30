@@ -68,7 +68,7 @@ public class GameControllerTests
         var expectedStatusCode = 201;
 
         Assert.Equal(expectedStatusCode, actualStatusCode);
-        Assert.IsType<Guid>(actualResultData!.Data!.Id);
+        Assert.Equal(expectedResponse.Data.Id, actualResultData!.Data!.Id);
         Assert.Equal(expectedResponse.Data.Name, actualResultData.Data.Name);
         Assert.Equal(expectedResponse.Data.CreatedBy, actualResultData.Data.CreatedBy);
         Assert.Equal(expectedResponse.Data.CreationDate, actualResultData.Data.CreationDate);
@@ -85,7 +85,7 @@ public class GameControllerTests
     [Fact]
     public async void GetGame_ShouldReturn200StatusWithExpectedResponse_WhenSuccessful()
     {
-        var mockRequest = Guid.NewGuid();
+        var mockRequest = Guid.NewGuid().ToString();
 
         var controllerUnderTest = new GameController(_mediator);
         IActionResult result = await controllerUnderTest.GetGame(mockRequest);
@@ -203,7 +203,7 @@ public class GameControllerTests
     [Fact]
     public async void DeleteGame_ShouldReturn200StatusWithExpectedResponse_WhenSuccessful()
     {
-        var mockId = Guid.NewGuid();
+        var mockId = Guid.NewGuid().ToString();
 
         var controllerUnderTest = new GameController(_mediator);
         IActionResult result = await controllerUnderTest.DeleteGame(mockId);

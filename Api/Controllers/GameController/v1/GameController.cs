@@ -36,11 +36,11 @@ public class GameController : ApiController
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetGame(Guid id)
+    public async Task<IActionResult> GetGame(string id)
     {
         var game = new GameResponse()
         {
-            Id = id.ToString(),
+            Id = id,
             Name = "Asteroids",
             IsActive = true,
             CreationDate = DateTime.Today,
@@ -110,11 +110,11 @@ public class GameController : ApiController
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteGame(Guid id)
+    public async Task<IActionResult> DeleteGame(string id)
     {
         var game = new GameResponse()
         {
-            Id = id.ToString(),
+            Id = id,
             Name = "Pac-Man",
             IsActive = false,
             CreationDate = DateTime.Today,
