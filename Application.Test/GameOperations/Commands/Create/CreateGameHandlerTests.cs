@@ -1,12 +1,13 @@
-﻿using Application.GameOperations.Commands;
+﻿using Application.GameOperations.Commands.Create;
 using Application.Persistence;
 using Bogus;
 using Domain.Entities;
 using Domain.Errors;
+using ErrorOr;
 using FluentAssertions;
 using NSubstitute;
 
-namespace Application.Test.GameOperations.Commands;
+namespace Application.Test.GameOperations.Commands.Create;
 
 public class CreateGameHandlerTests
 {
@@ -35,7 +36,7 @@ public class CreateGameHandlerTests
 
         var handler = new CreateGameHandler(_gameRespository, _unitOfWork);
 
-        ErrorOr.ErrorOr<Game> result = await handler.Handle(command, default);
+        ErrorOr<Game> result = await handler.Handle(command, default);
 
         result.IsError.Should().BeFalse();
         result.Value.Id.Should().NotBeEmpty();
@@ -57,7 +58,7 @@ public class CreateGameHandlerTests
 
         var handler = new CreateGameHandler(_gameRespository, _unitOfWork);
 
-        ErrorOr.ErrorOr<Game> result = await handler.Handle(command, default);
+        ErrorOr<Game> result = await handler.Handle(command, default);
 
         result.IsError.Should().BeTrue();
         result.Errors.First().Code.Should().Be(Errors.Game.CreateError.Code);

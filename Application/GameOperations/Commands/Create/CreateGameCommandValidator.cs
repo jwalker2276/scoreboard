@@ -1,7 +1,7 @@
 ﻿using Application.Common;
 using FluentValidation;
 
-namespace Application.GameOperations.Commands;
+namespace Application.GameOperations.Commands.Create;
 
 public class CreateGameCommandValidator : AbstractValidator<CreateGameCommand>
 {

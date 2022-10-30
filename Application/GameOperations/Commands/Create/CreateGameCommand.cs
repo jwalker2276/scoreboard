@@ -2,7 +2,7 @@ using Domain.Entities;
 using ErrorOr;
 using MediatR;
 
-namespace Application.GameOperations.Commands;
+namespace Application.GameOperations.Commands.Create;
 
 public class CreateGameCommand : IRequest<ErrorOr<Game>>
 {

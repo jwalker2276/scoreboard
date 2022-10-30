@@ -1,8 +1,8 @@
-﻿using Application.GameOperations.Commands;
+﻿using Application.GameOperations.Commands.Create;
 using FluentAssertions;
 using FluentValidation.Results;
 
-namespace Application.Test.GameOperations.Commands;
+namespace Application.Test.GameOperations.Commands.Create;
 
 public class CreateGameCommandValidatorTests
 {

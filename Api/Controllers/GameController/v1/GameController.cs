@@ -1,7 +1,7 @@
 using Api.Contracts.CommonDTO;
 using Api.Contracts.GameDTO;
 using Api.Controllers.Common;
-using Application.GameOperations.Commands;
+using Application.GameOperations.Commands.Create;
 using Domain.Entities;
 using ErrorOr;
 using MediatR;

@@ -4,7 +4,7 @@ using Domain.Errors;
 using ErrorOr;
 using MediatR;
 
-namespace Application.GameOperations.Commands;
+namespace Application.GameOperations.Commands.Create;
 
 internal sealed class CreateGameHandler : IRequestHandler<CreateGameCommand, ErrorOr<Game>>
 {

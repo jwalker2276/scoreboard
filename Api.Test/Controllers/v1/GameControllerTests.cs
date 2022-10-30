@@ -1,7 +1,7 @@
 using Api.Contracts.CommonDTO;
 using Api.Contracts.GameDTO;
 using Api.Controllers.GameController.v1;
-using Application.GameOperations.Commands;
+using Application.GameOperations.Commands.Create;
 using Bogus;
 using Domain.Entities;
 using ErrorOr;
