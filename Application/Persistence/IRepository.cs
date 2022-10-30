@@ -5,9 +5,9 @@ public interface IRepository<TEntity>
 {
     public void Create(TEntity entity);
 
-    public IEnumerable<TEntity> GetAll();
+    public Task<IEnumerable<TEntity>> GetAll(CancellationToken cancellationToken);
 
-    public TEntity? GetById(Guid id);
+    public Task<TEntity?> GetById(Guid id, CancellationToken cancellationToken);
 
     public void Update(TEntity entity);
 

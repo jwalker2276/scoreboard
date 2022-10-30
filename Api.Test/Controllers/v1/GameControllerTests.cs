@@ -26,17 +26,18 @@ public class GameControllerTests
     [Fact]
     public async void CreateGame_ShouldReturn201StatusWithExpectedResponse_WhenSuccessful()
     {
+        var mockId = Guid.NewGuid();
         var mockName = "Asteroids";
         var mockUser = _faker.Person.FullName;
-        var mockId = Guid.NewGuid();
+        DateTimeOffset mockCreationDate = _faker.Date.RecentOffset();
 
-        var commandResponseDate = new Game(mockId, mockName, true, mockUser);
+        var commandResponseDate = new Game(mockId, mockName, true, mockUser, mockCreationDate);
         ErrorOr<Game> commandResponse = commandResponseDate;
 
 
         var expectedData = new GameResponse
         {
-            Id = commandResponseDate.Id,
+            Id = commandResponseDate.Id.ToString(),
             Name = commandResponseDate.Name,
             IsActive = commandResponseDate.IsActive,
             CreationDate = commandResponseDate.CreationDate,
@@ -100,7 +101,7 @@ public class GameControllerTests
         {
             Data = new GameResponse()
             {
-                Id = mockRequest,
+                Id = mockRequest.ToString(),
                 Name = "Asteroids",
                 IsActive = true,
                 CreationDate = DateTime.Today,
@@ -132,7 +133,7 @@ public class GameControllerTests
 
         var game1 = new GameResponse()
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.NewGuid().ToString(),
             Name = "Asteroids",
             IsActive = true,
             CreationDate = DateTime.Today,
@@ -140,7 +141,7 @@ public class GameControllerTests
         };
         var game2 = new GameResponse()
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.NewGuid().ToString(),
             Name = "Pac-Man",
             IsActive = true,
             CreationDate = DateTime.Today,
@@ -181,7 +182,7 @@ public class GameControllerTests
         {
             Data = new GameResponse()
             {
-                Id = mockRequest.Id,
+                Id = mockRequest.Id.ToString(),
                 Name = "Defender",
                 IsActive = true,
                 CreationDate = DateTime.Today,
@@ -218,7 +219,7 @@ public class GameControllerTests
         {
             Data = new GameResponse()
             {
-                Id = mockId,
+                Id = mockId.ToString(),
                 Name = "Pac-Man",
                 IsActive = false,
                 CreationDate = DateTime.Today,

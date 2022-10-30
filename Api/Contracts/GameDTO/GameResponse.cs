@@ -4,7 +4,7 @@ namespace Api.Contracts.GameDTO;
 
 public class GameResponse
 {
-    public Guid Id { get; init; }
+    public string Id { get; init; } = string.Empty;
 
     public string Name { get; init; } = string.Empty;
 
@@ -20,7 +20,7 @@ public class GameResponse
 
     public GameResponse(Game game)
     {
-        Id = game.Id;
+        Id = game.Id.ToString();
         Name = game.Name;
         IsActive = game.IsActive;
         CreationDate = game.CreationDate;

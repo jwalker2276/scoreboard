@@ -1,3 +1,4 @@
+using Application.Common.Dates;
 using Application.Persistence;
 using Domain.Entities;
 using Domain.Errors;
@@ -9,18 +10,23 @@ namespace Application.GameOperations.Commands.Create;
 internal sealed class CreateGameHandler : IRequestHandler<CreateGameCommand, ErrorOr<Game>>
 {
     private readonly IRepository<Game> _gameRepository;
+
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateGameHandler(IRepository<Game> gameRepository, IUnitOfWork unitOfWork)
+    private readonly IDateTimeProvider _dateTimeProvider;
+
+    public CreateGameHandler(IRepository<Game> gameRepository, IUnitOfWork unitOfWork, IDateTimeProvider dateTimeProvider)
     {
         _gameRepository = gameRepository;
         _unitOfWork = unitOfWork;
+        _dateTimeProvider = dateTimeProvider;
     }
 
     public async Task<ErrorOr<Game>> Handle(CreateGameCommand command, CancellationToken cancellationToken)
     {
         var id = Guid.NewGuid();
-        var game = new Game(id, command.Name, true, command.CreatedBy);
+        DateTimeOffset creationDate = _dateTimeProvider.Now;
+        var game = new Game(id, command.Name, true, command.CreatedBy, creationDate);
 
         _gameRepository.Create(game);
 

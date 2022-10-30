@@ -21,14 +21,14 @@ internal class GameRepository : IRepository<Game>
         _dbSet.Add(game);
     }
 
-    public IEnumerable<Game> GetAll()
+    public async Task<IEnumerable<Game>> GetAll(CancellationToken cancellationToken)
     {
-        return _dbSet.ToList();
+        return await _dbSet.ToListAsync(cancellationToken);
     }
 
-    public Game? GetById(Guid id)
+    public async Task<Game?> GetById(Guid id, CancellationToken cancellationToken)
     {
-        return _dbSet.Find(id);
+        return await _dbSet.FindAsync(id, cancellationToken);
     }
 
     public void Update(Game game)

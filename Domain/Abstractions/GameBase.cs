@@ -4,11 +4,11 @@ namespace Domain.Abstractions;
 
 public abstract class GameBase : Entity
 {
-    protected GameBase(Guid id, string name, bool isActive, string createdBy) : base(id)
+    protected GameBase(Guid id, string name, bool isActive, string createdBy, DateTimeOffset creationDate) : base(id)
     {
         Name = name;
         IsActive = isActive;
-        CreationDate = DateTimeOffset.Now;
+        CreationDate = creationDate;
         CreatedBy = createdBy;
     }
 

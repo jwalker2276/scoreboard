@@ -1,5 +1,7 @@
-﻿using Application.Persistence;
+﻿using Application.Common.Dates;
+using Application.Persistence;
 using Domain.Entities;
+using Infrastructure.Dates;
 using Infrastructure.Options;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +35,7 @@ public static class DependencyInjection
 
         services.AddScoped<IRepository<Game>, GameRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
         return services;
     }

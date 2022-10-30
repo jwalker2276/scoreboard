@@ -24,4 +24,9 @@
 		</AssemblyAttribute>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="GameOperations\Commands\Delete\" />
+	  <Folder Include="GameOperations\Commands\Update\" />
+	</ItemGroup>
+
 </Project>

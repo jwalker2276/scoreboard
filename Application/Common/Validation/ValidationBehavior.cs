@@ -4,7 +4,7 @@ using FluentValidation.Results;
 using MediatR;
 using System.Reflection;
 
-namespace Application.Common;
+namespace Application.Common.Validation;
 
 public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>

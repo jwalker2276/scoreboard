@@ -40,7 +40,7 @@ public class GameController : ApiController
     {
         var game = new GameResponse()
         {
-            Id = id,
+            Id = id.ToString(),
             Name = "Asteroids",
             IsActive = true,
             CreationDate = DateTime.Today,
@@ -61,7 +61,7 @@ public class GameController : ApiController
     {
         var game1 = new GameResponse()
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.NewGuid().ToString(),
             Name = "Asteroids",
             IsActive = true,
             CreationDate = DateTime.Today,
@@ -70,7 +70,7 @@ public class GameController : ApiController
 
         var game2 = new GameResponse()
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.NewGuid().ToString(),
             Name = "Pac-Man",
             IsActive = true,
             CreationDate = DateTime.Today,
@@ -93,7 +93,7 @@ public class GameController : ApiController
     {
         var game = new GameResponse()
         {
-            Id = request.Id,
+            Id = request.Id.ToString(),
             Name = request.Name,
             IsActive = request.IsActive,
             CreationDate = DateTime.Today,
@@ -114,7 +114,7 @@ public class GameController : ApiController
     {
         var game = new GameResponse()
         {
-            Id = id,
+            Id = id.ToString(),
             Name = "Pac-Man",
             IsActive = false,
             CreationDate = DateTime.Today,

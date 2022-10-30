@@ -1,4 +1,5 @@
-﻿using Application.GameOperations.Commands.Create;
+﻿using Application.Common.Dates;
+using Application.GameOperations.Commands.Create;
 using Application.Persistence;
 using Bogus;
 using Domain.Entities;
@@ -17,6 +18,8 @@ public class CreateGameHandlerTests
 
     private readonly IUnitOfWork _unitOfWork;
 
+    private readonly IDateTimeProvider _dateTimeProvider;
+
     public CreateGameHandlerTests()
     {
         _faker = new Faker();
@@ -24,6 +27,8 @@ public class CreateGameHandlerTests
         _gameRespository = Substitute.For<IRepository<Game>>();
 
         _unitOfWork = Substitute.For<IUnitOfWork>();
+
+        _dateTimeProvider = Substitute.For<IDateTimeProvider>();
     }
 
     [Fact]
@@ -31,10 +36,13 @@ public class CreateGameHandlerTests
     {
         var fakeName = _faker.Lorem.Word();
         var fakeCreatedBy = _faker.Person.FullName;
+        DateTimeOffset fakeCreationDate = _faker.Date.RecentOffset();
 
         var command = new CreateGameCommand(fakeName, fakeCreatedBy);
 
-        var handler = new CreateGameHandler(_gameRespository, _unitOfWork);
+        _dateTimeProvider.Now.Returns(fakeCreationDate);
+
+        var handler = new CreateGameHandler(_gameRespository, _unitOfWork, _dateTimeProvider);
 
         ErrorOr<Game> result = await handler.Handle(command, default);
 
@@ -43,7 +51,7 @@ public class CreateGameHandlerTests
         result.Value.Name.Should().Be(fakeName);
         result.Value.IsActive.Should().BeTrue();
         result.Value.CreatedBy.Should().Be(fakeCreatedBy);
-        result.Value.CreationDate.Should().BeOnOrBefore(DateTimeOffset.Now);
+        result.Value.CreationDate.Should().Be(fakeCreationDate);
     }
 
     [Fact]
@@ -56,7 +64,7 @@ public class CreateGameHandlerTests
 
         _unitOfWork.SaveAsync(default).Returns(true);
 
-        var handler = new CreateGameHandler(_gameRespository, _unitOfWork);
+        var handler = new CreateGameHandler(_gameRespository, _unitOfWork, _dateTimeProvider);
 
         ErrorOr<Game> result = await handler.Handle(command, default);
 

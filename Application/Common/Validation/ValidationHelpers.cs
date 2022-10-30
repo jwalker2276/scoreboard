@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Application.Common;
+namespace Application.Common.Validation;
 
 public static class ValidationHelper
 {
@@ -8,8 +8,13 @@ public static class ValidationHelper
 
     public static bool HaveAcceptableCharacters(string name)
     {
-        var regexTest = new Regex(_regexPatternForAcceptableCharacters); ;
+        var regexTest = new Regex(_regexPatternForAcceptableCharacters);
 
         return regexTest.IsMatch(name);
+    }
+
+    public static bool IsAGuid(string idToCheck)
+    {
+        return Guid.TryParse(idToCheck, out _);
     }
 }
