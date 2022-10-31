@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.GameOperations.Commands.Create;
 
-internal sealed class CreateGameHandler : IRequestHandler<CreateGameCommand, ErrorOr<Game>>
+public sealed class CreateGameHandler : IRequestHandler<CreateGameCommand, ErrorOr<Game>>
 {
     private readonly IRepository<Game> _gameRepository;
 

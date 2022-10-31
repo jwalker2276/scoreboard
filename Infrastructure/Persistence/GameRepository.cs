@@ -28,7 +28,7 @@ internal class GameRepository : IRepository<Game>
 
     public async Task<Game?> GetById(Guid id, CancellationToken cancellationToken)
     {
-        return await _dbSet.FindAsync(id, cancellationToken);
+        return await _dbSet.FindAsync(new object[] { id }, cancellationToken);
     }
 
     public void Update(Game game)

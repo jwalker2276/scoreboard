@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.GameOperations.Queries.GetbyId;
 
-internal class GetGameByIdHandler : IRequestHandler<GetGameByIdQuery, ErrorOr<Game>>
+public sealed class GetGameByIdHandler : IRequestHandler<GetGameByIdQuery, ErrorOr<Game>>
 {
     private readonly IRepository<Game> _gameRepository;
 

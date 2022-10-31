@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.GameOperations.Queries.GetbyId;
 
-internal class GetGameByIdQuery : IRequest<ErrorOr<Game>>
+public class GetGameByIdQuery : IRequest<ErrorOr<Game>>
 {
     public string Id { get; init; }
 
