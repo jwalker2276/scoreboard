@@ -3,6 +3,7 @@ using Application.Persistence;
 using Bogus;
 using Domain.Entities;
 using Domain.Errors;
+using Domain.Test.Common;
 using ErrorOr;
 using FluentAssertions;
 using NSubstitute;
@@ -13,11 +14,15 @@ public class GetGameByIdHandlerTests
 {
     private readonly Faker _faker;
 
+    private readonly EntityGenerator _entityGenerator;
+
     private readonly IRepository<Game> _gameRespository;
 
     public GetGameByIdHandlerTests()
     {
         _faker = new Faker();
+
+        _entityGenerator = new EntityGenerator();
 
         _gameRespository = Substitute.For<IRepository<Game>>();
     }
@@ -25,7 +30,7 @@ public class GetGameByIdHandlerTests
     [Fact]
     public async Task GetGameByIdHandler_Should_ReturnSuccessResultWithGame_WhenGameIsFound()
     {
-        Game mockGame = GenerateFakeGame();
+        Game mockGame = _entityGenerator.GetMockGame();
 
         var query = new GetGameByIdQuery(mockGame.Id.ToString());
 
@@ -56,16 +61,5 @@ public class GetGameByIdHandlerTests
         result.IsError.Should().BeTrue();
         result.Errors.First().Code.Should().Be(Errors.Game.NotFound.Code);
         result.Errors.First().Description.Should().Be(Errors.Game.NotFound.Description);
-    }
-
-    private Game GenerateFakeGame()
-    {
-        Guid mockId = _faker.Random.Guid();
-        var mockName = _faker.Random.Word();
-        var mockIsActive = _faker.Random.Bool();
-        var mockCreatedBy = _faker.Name.FullName();
-        DateTimeOffset mockCreationDate = _faker.Date.RecentOffset();
-
-        return new Game(mockId, mockName, mockIsActive, mockCreatedBy, mockCreationDate);
     }
 }
