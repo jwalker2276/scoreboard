@@ -1,6 +1,6 @@
 using Domain.Entities;
 
-namespace Api.Contracts.GameDTO;
+namespace Api.Contracts.DTO;
 
 public class GameResponse
 {
@@ -12,8 +12,6 @@ public class GameResponse
 
     public DateTimeOffset CreationDate { get; init; }
 
-    public string CreatedBy { get; init; } = string.Empty;
-
     public GameResponse()
     {
     }
@@ -24,6 +22,5 @@ public class GameResponse
         Name = game.Name;
         IsActive = game.IsActive;
         CreationDate = game.CreationDate;
-        CreatedBy = game.CreatedBy;
     }
 }

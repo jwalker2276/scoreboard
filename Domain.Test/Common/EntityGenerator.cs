@@ -21,4 +21,16 @@ public class EntityGenerator
 
         return new Game(mockId, mockName, mockIsActive, mockCreatedBy, mockCreationDate);
     }
+
+    public List<Game> GetMockGames(int gamesCount)
+    {
+        List<Game> games = new();
+
+        for (var i = 0; i < gamesCount; i++)
+        {
+            games.Add(GetMockGame());
+        }
+
+        return games;
+    }
 }

@@ -1,5 +1,6 @@
 using Api.Contracts.CommonDTO;
-using Api.Contracts.GameDTO;
+using Api.Contracts.DTO;
+using Api.Contracts.GameRequests;
 using Api.Controllers.Common;
 using Application.GameOperations.Commands.Create;
 using Application.GameOperations.Queries.GetbyId;
@@ -27,13 +28,19 @@ public class GameController : ApiController
 
         ErrorOr<Game> createResult = await _mediator.Send(command, cancellationToken);
 
+        return createResult.Match(
+            gameData => GetCreateGameSuccessAction(gameData),
+            errors => Problem(errors));
+    }
+
+    private IActionResult GetCreateGameSuccessAction(Game gameData)
+    {
+        var responseData = new GameResponse(gameData);
         var messageForResponse = "Successfully created game.";
 
-        return createResult.Match(
-            gameData => CreatedAtAction(nameof(GetGame),
-                                        new { id = gameData.Id },
-                                        new StandardResponse<GameResponse>(new GameResponse(gameData), messageForResponse)),
-            errors => Problem(errors));
+        return CreatedAtAction(nameof(GetGame),
+                               new { id = gameData.Id },
+                               new StandardResponse<GameResponse>(responseData, messageForResponse));
     }
 
     [HttpGet("{id}")]
@@ -43,44 +50,34 @@ public class GameController : ApiController
 
         ErrorOr<Game> queryResult = await _mediator.Send(query, cancellationToken);
 
-        var messageForResponse = "Successfully found game.";
-
         return queryResult.Match(
-            gameData => Ok(new StandardResponse<GameResponse>(new GameResponse(gameData), messageForResponse)),
+            gameData => GetGameSuccessAction(gameData),
             errors => Problem(errors));
     }
 
-    //[HttpGet]
-    //public async Task<IActionResult> GetAllGames()
-    //{
-    //    var game1 = new GameResponse()
-    //    {
-    //        Id = Guid.NewGuid().ToString(),
-    //        Name = "Asteroids",
-    //        IsActive = true,
-    //        CreationDate = DateTime.Today,
-    //        CreatedBy = "John Smith"
-    //    };
+    private IActionResult GetGameSuccessAction(Game gameData)
+    {
+        var responseData = new GameResponse(gameData);
+        var messageForResponse = "Successfully found game.";
 
-    //    var game2 = new GameResponse()
-    //    {
-    //        Id = Guid.NewGuid().ToString(),
-    //        Name = "Pac-Man",
-    //        IsActive = true,
-    //        CreationDate = DateTime.Today,
-    //        CreatedBy = "Sam Smith"
-    //    };
+        return Ok(new StandardResponse<GameResponse>(responseData, messageForResponse));
+    }
 
-    //    var games = new List<GameResponse> { game1, game2 };
+    [HttpGet]
+    public async Task<IActionResult> GetAllGames(CancellationToken cancellation)
+    {
+        List<GameResponse> gameData = new();
 
-    //    var response = new StandardCollectionResponse<GameResponse>()
-    //    {
-    //        Data = games,
-    //        Message = "Successfully found games"
-    //    };
+        return GetAllGamesSuccessAction(gameData);
+    }
 
-    //    return Ok(response);
-    //}
+    private IActionResult GetAllGamesSuccessAction(List<GameResponse> gameData)
+    {
+        var messageForResponse = "Successfully found game.";
+        var response = new StandardResponse<List<GameResponse>>(gameData, messageForResponse);
+
+        return Ok(response);
+    }
 
     //[HttpPut]
     //public async Task<IActionResult> UpdateGame(UpdateStandardGameRequest request)

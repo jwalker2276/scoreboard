@@ -1,4 +1,4 @@
-namespace Api.Contracts.GameDTO;
+namespace Api.Contracts.GameRequests;
 
 public class CreateStandardGameRequest
 {

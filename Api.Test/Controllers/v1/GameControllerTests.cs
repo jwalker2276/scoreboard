@@ -1,5 +1,6 @@
 using Api.Contracts.CommonDTO;
-using Api.Contracts.GameDTO;
+using Api.Contracts.DTO;
+using Api.Contracts.GameRequests;
 using Api.Controllers.GameController.v1;
 using Api.Test.Common;
 using Application.GameOperations.Commands.Create;
@@ -49,14 +50,14 @@ public class GameControllerTests
         IActionResult result = await controllerUnderTest.CreateGame(mockRequest, CancellationToken.None);
 
         // Assert
-        CreatedAtActionResult actualResult = Assert.IsType<CreatedAtActionResult>(result);
-        var actualResultData = actualResult.Value as StandardResponse<GameResponse>;
-        var actualStatusCode = actualResult.StatusCode;
+        CreatedAtActionResult actualActionResult = Assert.IsType<CreatedAtActionResult>(result);
+        var actualStatusCode = actualActionResult.StatusCode;
+        var actualResult = actualActionResult.Value as StandardResponse<GameResponse>;
 
         var expectedStatusCode = 201;
 
         Assert.Equal(expectedStatusCode, actualStatusCode);
-        Assert.NotNull(actualResultData);
+        Assert.NotNull(actualResult);
 
         var expectedCommandResponseData = new GameResponse
         {
@@ -64,13 +65,12 @@ public class GameControllerTests
             Name = mockCommandResponse.Value.Name,
             IsActive = mockCommandResponse.Value.IsActive,
             CreationDate = mockCommandResponse.Value.CreationDate,
-            CreatedBy = mockCommandResponse.Value.CreatedBy,
         };
 
         var expectedResponse = new StandardResponse<GameResponse>(expectedCommandResponseData, "Successfully created game.");
 
-        Assert.True(ResponseHelper.DoGamesValuesMatch(expectedResponse.Data, actualResultData.Data));
-        Assert.Equal(expectedResponse.Message, actualResultData.Message);
+        Assert.True(ResponseHelper.DoGameResponsesMatch(expectedResponse.Data, actualResult.Data));
+        Assert.Equal(expectedResponse.Message, actualResult.Message);
 
         await _mediator.Received(1).Send(
             Arg.Is<CreateGameCommand>(
@@ -93,11 +93,11 @@ public class GameControllerTests
         IActionResult result = await controllerUnderTest.GetGame(mockQueryResponse.Value.Id.ToString(), default);
 
         // Assert
-        OkObjectResult actualResult = Assert.IsType<OkObjectResult>(result);
-        var actualResultData = actualResult.Value as StandardResponse<GameResponse>;
+        OkObjectResult actualActionResult = Assert.IsType<OkObjectResult>(result);
+        var actualResult = actualActionResult.Value as StandardResponse<GameResponse>;
 
         var expectedStatusCode = 200;
-        var actualStatusCode = actualResult.StatusCode;
+        var actualStatusCode = actualActionResult.StatusCode;
         Assert.Equal(expectedStatusCode, actualStatusCode);
 
         var expectedResponseData = new GameResponse()
@@ -106,55 +106,44 @@ public class GameControllerTests
             Name = mockQueryResponse.Value.Name,
             IsActive = mockQueryResponse.Value.IsActive,
             CreationDate = mockQueryResponse.Value.CreationDate,
-            CreatedBy = mockQueryResponse.Value.CreatedBy,
         };
 
         var expectedResponse = new StandardResponse<GameResponse>(expectedResponseData, "Successfully found game.");
 
-        Assert.NotNull(actualResultData!.Data);
-        Assert.True(ResponseHelper.DoGamesValuesMatch(expectedResponse.Data, actualResultData.Data));
-        Assert.Equal(expectedResponse.Message, actualResultData.Message);
+        Assert.NotNull(actualResult!.Data);
+        Assert.True(ResponseHelper.DoGameResponsesMatch(expectedResponse.Data, actualResult.Data));
+        Assert.Equal(expectedResponse.Message, actualResult.Message);
     }
 
-    //[Fact]
-    //public async void GetGames_ShouldReturn200StatusWithExpectedResponse_WhenSuccessful()
-    //{
-    //    var controllerUnderTest = new GameController(_mediator);
-    //    IActionResult result = await controllerUnderTest.GetAllGames();
+    [Fact]
+    public async void GetAllGames_ShouldReturn200StatusWithExpectedResponse_WhenSuccessful()
+    {
+        // Arrange
+        ErrorOr<List<Game>> mockQueryResponse = _entityGenerator.GetMockGames(2);
 
-    //    OkObjectResult actualResult = Assert.IsType<OkObjectResult>(result);
-    //    var actualResultData = actualResult.Value as StandardCollectionResponse<GameResponse>;
+        _mediator.Send(Arg.Any<CancellationToken>()).Returns(mockQueryResponse);
 
-    //    var expectedStatusCode = 200;
-    //    var actualStatusCode = actualResult.StatusCode;
-    //    Assert.Equal(expectedStatusCode, actualStatusCode);
+        var controllerUnderTest = new GameController(_mediator);
 
-    //    var game1 = new GameResponse()
-    //    {
-    //        Id = Guid.NewGuid().ToString(),
-    //        Name = "Asteroids",
-    //        IsActive = true,
-    //        CreationDate = DateTime.Today,
-    //        CreatedBy = "John Smith"
-    //    };
-    //    var game2 = new GameResponse()
-    //    {
-    //        Id = Guid.NewGuid().ToString(),
-    //        Name = "Pac-Man",
-    //        IsActive = true,
-    //        CreationDate = DateTime.Today,
-    //        CreatedBy = "Sam Smith"
-    //    };
+        // Act
+        IActionResult result = await controllerUnderTest.GetAllGames(default);
 
-    //    var expectedResponse = new StandardCollectionResponse<GameResponse>()
-    //    {
-    //        Data = new List<GameResponse>() { game1, game2 },
-    //        Message = "Successfully found games"
-    //    };
+        // Assert
+        OkObjectResult actualActionResult = Assert.IsType<OkObjectResult>(result);
+        var actualResult = actualActionResult.Value as StandardResponse<List<GameResponse>>;
 
-    //    Assert.Equal(2, actualResultData!.Data.Count);
-    //    Assert.Equal(expectedResponse.Message, actualResultData.Message);
-    //}
+        var expectedStatusCode = 200;
+        var actualStatusCode = actualActionResult.StatusCode;
+        Assert.Equal(expectedStatusCode, actualStatusCode);
+
+        List<GameResponse> expectedResponseData = GameResponseList.CreateGameResponseListFactory(mockQueryResponse.Value);
+
+        var expectedResult = new StandardResponse<List<GameResponse>>(expectedResponseData, "Successfully found game.");
+
+        Assert.NotNull(actualResult!.Data);
+        Assert.True(ResponseHelper.DoGameResponsesMatch(expectedResult.Data, actualResult.Data));
+        Assert.Equal(expectedResult.Message, actualResult.Message);
+    }
 
     //[Fact]
     //public async void UpdateGame_ShouldReturn200StatusWithExpectedResponse_WhenSuccessful()

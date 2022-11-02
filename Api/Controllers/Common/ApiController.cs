@@ -8,7 +8,7 @@ namespace Api.Controllers.Common;
 [ApiController]
 public class ApiController : ControllerBase
 {
-    protected IActionResult Problem(List<ErrorOr.Error> errors)
+    protected IActionResult Problem(List<Error> errors)
     {
         if (errors.Count == 0)
         {
@@ -24,17 +24,17 @@ public class ApiController : ControllerBase
 
         HttpContext.Items[HttpContextItemKeys.Errors] = errors;
 
-        ErrorOr.Error firstError = errors[0];
+        Error firstError = errors[0];
 
         return CreateProblemFromFirstError(firstError);
 
     }
 
-    private IActionResult CreateValidationProblem(List<ErrorOr.Error> errors)
+    private IActionResult CreateValidationProblem(List<Error> errors)
     {
         var errorDictionary = new ModelStateDictionary();
 
-        foreach (ErrorOr.Error error in errors)
+        foreach (Error error in errors)
         {
             errorDictionary.AddModelError(error.Code, error.Description);
         }
@@ -42,7 +42,7 @@ public class ApiController : ControllerBase
         return ValidationProblem(errorDictionary);
     }
 
-    private IActionResult CreateProblemFromFirstError(ErrorOr.Error firstError)
+    private IActionResult CreateProblemFromFirstError(Error firstError)
     {
         var statusCode = firstError.Type switch
         {
