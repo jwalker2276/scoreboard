@@ -4,6 +4,7 @@ using Api.Contracts.GameRequests;
 using Api.Controllers.GameController.v1;
 using Api.Test.Common;
 using Application.GameOperations.Commands.Create;
+using Application.GameOperations.Queries.GetAll;
 using Application.GameOperations.Queries.GetbyId;
 using Bogus;
 using Domain.Entities;
@@ -119,9 +120,9 @@ public class GameControllerTests
     public async void GetAllGames_ShouldReturn200StatusWithExpectedResponse_WhenSuccessful()
     {
         // Arrange
-        ErrorOr<List<Game>> mockQueryResponse = _entityGenerator.GetMockGames(2);
+        ErrorOr<List<Game>> mockQueryResponse = _entityGenerator.GetMockGames(0);
 
-        _mediator.Send(Arg.Any<CancellationToken>()).Returns(mockQueryResponse);
+        _mediator.Send(Arg.Any<GetAllGamesQuery>(), Arg.Any<CancellationToken>()).Returns(mockQueryResponse);
 
         var controllerUnderTest = new GameController(_mediator);
 
@@ -138,7 +139,7 @@ public class GameControllerTests
 
         List<GameResponse> expectedResponseData = GameResponseList.CreateGameResponseListFactory(mockQueryResponse.Value);
 
-        var expectedResult = new StandardResponse<List<GameResponse>>(expectedResponseData, "Successfully found game.");
+        var expectedResult = new StandardResponse<List<GameResponse>>(expectedResponseData, "Successfully returned all games.");
 
         Assert.NotNull(actualResult!.Data);
         Assert.True(ResponseHelper.DoGameResponsesMatch(expectedResult.Data, actualResult.Data));

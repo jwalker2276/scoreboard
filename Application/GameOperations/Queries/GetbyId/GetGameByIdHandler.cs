@@ -19,7 +19,7 @@ public sealed class GetGameByIdHandler : IRequestHandler<GetGameByIdQuery, Error
     {
         Guid.TryParse(query.Id, out Guid gameId);
 
-        Game? game = await _gameRepository.GetById(gameId, default);
+        Game? game = await _gameRepository.GetById(gameId, cancellationToken);
 
         return game is null ? Errors.Game.NotFound : game;
     }

@@ -21,7 +21,7 @@ internal class GameRepository : IRepository<Game>
         _dbSet.Add(game);
     }
 
-    public async Task<IEnumerable<Game>> GetAll(CancellationToken cancellationToken)
+    public async Task<List<Game>> GetAll(CancellationToken cancellationToken)
     {
         return await _dbSet.ToListAsync(cancellationToken);
     }

@@ -3,6 +3,7 @@ using Api.Contracts.DTO;
 using Api.Contracts.GameRequests;
 using Api.Controllers.Common;
 using Application.GameOperations.Commands.Create;
+using Application.GameOperations.Queries.GetAll;
 using Application.GameOperations.Queries.GetbyId;
 using Domain.Entities;
 using ErrorOr;
@@ -66,17 +67,21 @@ public class GameController : ApiController
     [HttpGet]
     public async Task<IActionResult> GetAllGames(CancellationToken cancellation)
     {
-        List<GameResponse> gameData = new();
+        var query = new GetAllGamesQuery();
 
-        return GetAllGamesSuccessAction(gameData);
+        ErrorOr<List<Game>> queryResult = await _mediator.Send(query, cancellation);
+
+        return queryResult.Match(
+            gameData => GetAllGamesSuccessAction(gameData),
+            errors => Problem(errors));
     }
 
-    private IActionResult GetAllGamesSuccessAction(List<GameResponse> gameData)
+    private IActionResult GetAllGamesSuccessAction(List<Game> gameData)
     {
-        var messageForResponse = "Successfully found game.";
-        var response = new StandardResponse<List<GameResponse>>(gameData, messageForResponse);
+        List<GameResponse> responseData = GameResponseList.CreateGameResponseListFactory(gameData);
+        var messageForResponse = "Successfully returned all games.";
 
-        return Ok(response);
+        return Ok(new StandardResponse<List<GameResponse>>(responseData, messageForResponse));
     }
 
     //[HttpPut]

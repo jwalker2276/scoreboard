@@ -6,7 +6,7 @@ public class GameResponseList
 {
     private List<GameResponse> GameResponseCollection { get; init; } = new List<GameResponse>();
 
-    public GameResponseList()
+    private GameResponseList()
     {
     }
 
