@@ -312,6 +312,9 @@ dotnet_naming_style.begins_with_underscore_and_camel_case.capitalization = camel
 # IDE0058: Expression value is never used
 dotnet_diagnostic.IDE0058.severity = none
 
+# CS8794: The input always matches the provided pattern.
+dotnet_diagnostic.CS8794.severity = suggestion
+
 [*.{cs,vb}]
 dotnet_style_coalesce_expression = true:warning
 dotnet_style_null_propagation = true:suggestion
