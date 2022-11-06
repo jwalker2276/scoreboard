@@ -3,7 +3,7 @@
 namespace Domain.Test.Common;
 public static class EntityHelper
 {
-    public static bool DoGamesValuesMatch(Game first, Game second)
+    public static bool DoAllGamesValuesMatch(Game first, Game second)
     {
         return first.Id == second.Id
             && first.Name == second.Name

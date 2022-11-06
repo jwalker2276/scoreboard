@@ -6,10 +6,6 @@ public class GameResponseList
 {
     private List<GameResponse> GameResponseCollection { get; init; } = new List<GameResponse>();
 
-    private GameResponseList()
-    {
-    }
-
     private GameResponseList(List<Game> games)
     {
         foreach (Game game in games)
