@@ -21,7 +21,6 @@ public sealed class UpdateGameCommandValidator : AbstractValidator<UpdateGameCom
 
         RuleFor(c => c.IsActive)
            .Cascade(CascadeMode.Stop)
-           .NotEmpty()
            .Must(IsActive => IsActive is true or false);
     }
 }

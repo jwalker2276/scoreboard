@@ -4,6 +4,8 @@ using Api.Contracts.GameRequests;
 using Api.Controllers.GameController.v1;
 using Api.Test.Common;
 using Application.GameOperations.Commands.Create;
+using Application.GameOperations.Commands.Delete;
+using Application.GameOperations.Commands.Update;
 using Application.GameOperations.Queries.GetAll;
 using Application.GameOperations.Queries.GetbyId;
 using Bogus;
@@ -146,82 +148,90 @@ public class GameControllerTests
         Assert.Equal(expectedResult.Message, actualResult.Message);
     }
 
-    //[Fact]
-    //public async void UpdateGame_ShouldReturn200StatusWithExpectedResponse_WhenSuccessful()
-    //{
-    //    var mockRequest = new UpdateStandardGameRequest()
-    //    {
-    //        Id = Guid.NewGuid(),
-    //        Name = "Defender",
-    //        IsActive = true,
-    //    };
+    [Fact]
+    public async void UpdateGame_ShouldReturn200StatusWithExpectedResponse_WhenSuccessful()
+    {
+        // Arrange
+        ErrorOr<Game> mockCommandResponse = _entityGenerator.GetMockGame();
 
-    //    var controllerUnderTest = new GameController(_mediator);
-    //    IActionResult result = await controllerUnderTest.UpdateGame(mockRequest);
+        _mediator.Send(Arg.Any<UpdateGameCommand>(), Arg.Any<CancellationToken>()).Returns(mockCommandResponse);
 
-    //    OkObjectResult actualResult = Assert.IsType<OkObjectResult>(result);
-    //    var actualResultData = actualResult.Value as StandardObjectResponse<GameResponse>;
+        var controllerUnderTest = new GameController(_mediator);
 
-    //    var expectedStatusCode = 200;
-    //    var actualStatusCode = actualResult.StatusCode;
-    //    Assert.Equal(expectedStatusCode, actualStatusCode);
+        var mockRequest = new UpdateStandardGameRequest()
+        {
+            Id = mockCommandResponse.Value.Id.ToString(),
+            Name = mockCommandResponse.Value.Name,
+            IsActive = mockCommandResponse.Value.IsActive,
+        };
 
-    //    var expectedResponse = new StandardObjectResponse<GameResponse>()
-    //    {
-    //        Data = new GameResponse()
-    //        {
-    //            Id = mockRequest.Id.ToString(),
-    //            Name = "Defender",
-    //            IsActive = true,
-    //            CreationDate = DateTime.Today,
-    //            CreatedBy = "Sam Smith"
-    //        },
-    //        Message = "Successfully updated game"
-    //    };
+        // Act
+        IActionResult result = await controllerUnderTest.UpdateGame(mockRequest, default);
 
-    //    Assert.Equal(expectedResponse.Data.Id, actualResultData!.Data!.Id);
-    //    Assert.Equal(expectedResponse.Data.Name, actualResultData.Data.Name);
-    //    Assert.Equal(expectedResponse.Data.CreatedBy, actualResultData.Data.CreatedBy);
-    //    Assert.Equal(expectedResponse.Data.CreationDate, actualResultData.Data.CreationDate);
-    //    Assert.True(actualResultData.Data.IsActive);
+        // Assert
+        OkObjectResult actualActionResult = Assert.IsType<OkObjectResult>(result);
+        var actualStatusCode = actualActionResult.StatusCode;
+        var actualResult = actualActionResult.Value as StandardResponse<GameResponse>;
 
-    //    Assert.Equal(expectedResponse.Message, actualResultData.Message);
-    //}
+        var expectedStatusCode = 200;
 
-    //[Fact]
-    //public async void DeleteGame_ShouldReturn200StatusWithExpectedResponse_WhenSuccessful()
-    //{
-    //    var mockId = Guid.NewGuid().ToString();
+        Assert.Equal(expectedStatusCode, actualStatusCode);
+        Assert.NotNull(actualResult);
 
-    //    var controllerUnderTest = new GameController(_mediator);
-    //    IActionResult result = await controllerUnderTest.DeleteGame(mockId);
+        var expectedCommandResponseData = new GameResponse
+        {
+            Id = mockCommandResponse.Value.Id.ToString(),
+            Name = mockCommandResponse.Value.Name,
+            IsActive = mockCommandResponse.Value.IsActive,
+            CreationDate = mockCommandResponse.Value.CreationDate,
+        };
 
-    //    OkObjectResult actualResult = Assert.IsType<OkObjectResult>(result);
-    //    var actualResultData = actualResult.Value as StandardObjectResponse<GameResponse>;
+        var expectedResponse = new StandardResponse<GameResponse>(expectedCommandResponseData, "Successfully updated game.");
 
-    //    var expectedStatusCode = 200;
-    //    var actualStatusCode = actualResult.StatusCode;
-    //    Assert.Equal(expectedStatusCode, actualStatusCode);
+        Assert.True(ResponseHelper.DoGameResponsesMatch(expectedResponse.Data, actualResult.Data));
+        Assert.Equal(expectedResponse.Message, actualResult.Message);
 
-    //    var expectedResponse = new StandardObjectResponse<GameResponse>()
-    //    {
-    //        Data = new GameResponse()
-    //        {
-    //            Id = mockId.ToString(),
-    //            Name = "Pac-Man",
-    //            IsActive = false,
-    //            CreationDate = DateTime.Today,
-    //            CreatedBy = "Sam Smith"
-    //        },
-    //        Message = "Successfully deleted game"
-    //    };
+        await _mediator.Received(1).Send(
+            Arg.Is<UpdateGameCommand>(
+                command => command.Id == mockRequest.Id &&
+                command.Name == mockRequest.Name &&
+                command.IsActive == mockRequest.IsActive),
+            Arg.Any<CancellationToken>());
+    }
 
-    //    Assert.Equal(expectedResponse.Data.Id, actualResultData!.Data!.Id);
-    //    Assert.Equal(expectedResponse.Data.Name, actualResultData.Data.Name);
-    //    Assert.Equal(expectedResponse.Data.CreatedBy, actualResultData.Data.CreatedBy);
-    //    Assert.Equal(expectedResponse.Data.CreationDate, actualResultData.Data.CreationDate);
-    //    Assert.False(actualResultData.Data.IsActive);
+    [Fact]
+    public async void DeleteGame_ShouldReturn200StatusWithExpectedResponse_WhenSuccessful()
+    {
+        // Arrange
+        ErrorOr<Game> mockQueryResponse = _entityGenerator.GetMockGame();
 
-    //    Assert.Equal(expectedResponse.Message, actualResultData.Message);
-    //}
+        _mediator.Send(Arg.Any<DeleteGameCommand>(), Arg.Any<CancellationToken>()).Returns(mockQueryResponse);
+
+        var controllerUnderTest = new GameController(_mediator);
+
+        // Act
+        IActionResult result = await controllerUnderTest.DeleteGame(mockQueryResponse.Value.Id.ToString(), default);
+
+        // Assert
+        OkObjectResult actualActionResult = Assert.IsType<OkObjectResult>(result);
+        var actualResult = actualActionResult.Value as StandardResponse<GameResponse>;
+
+        var expectedStatusCode = 200;
+        var actualStatusCode = actualActionResult.StatusCode;
+        Assert.Equal(expectedStatusCode, actualStatusCode);
+
+        var expectedResponseData = new GameResponse()
+        {
+            Id = mockQueryResponse.Value.Id.ToString(),
+            Name = mockQueryResponse.Value.Name,
+            IsActive = mockQueryResponse.Value.IsActive,
+            CreationDate = mockQueryResponse.Value.CreationDate,
+        };
+
+        var expectedResponse = new StandardResponse<GameResponse>(expectedResponseData, "Successfully deleted game.");
+
+        Assert.NotNull(actualResult!.Data);
+        Assert.True(ResponseHelper.DoGameResponsesMatch(expectedResponse.Data, actualResult.Data));
+        Assert.Equal(expectedResponse.Message, actualResult.Message);
+    }
 }

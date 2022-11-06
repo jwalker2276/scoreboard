@@ -31,9 +31,16 @@ internal class GameRepository : IRepository<Game>
         return await _dbSet.FindAsync(new object[] { id }, cancellationToken);
     }
 
-    public void Update(Game game)
+    public async Task<Game?> FindAndUpdate(Game updatedGame, CancellationToken cancellationToken)
     {
-        _dbSet.Update(game);
+        Game? game = await _dbSet.FirstOrDefaultAsync(x => x.Id == updatedGame.Id, cancellationToken);
+
+        if (game is null) return null;
+
+        game.UpdateName(updatedGame.Name);
+        game.UpdateIsActive(updatedGame.IsActive);
+
+        return game;
     }
 
     public void Delete(Game game)

@@ -9,7 +9,7 @@ public interface IRepository<TEntity>
 
     public Task<TEntity?> GetById(Guid id, CancellationToken cancellationToken);
 
-    public void Update(TEntity entity);
+    public Task<TEntity?> FindAndUpdate(TEntity updatedEntity, CancellationToken cancellationToken);
 
     public void Delete(TEntity entity);
 }

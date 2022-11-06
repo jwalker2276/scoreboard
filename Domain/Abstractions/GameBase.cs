@@ -12,11 +12,21 @@ public abstract class GameBase : Entity
         CreatedBy = createdBy;
     }
 
-    public string Name { get; init; }
+    public string Name { get; private set; }
 
-    public bool IsActive { get; init; }
+    public bool IsActive { get; private set; }
 
     public DateTimeOffset CreationDate { get; init; }
 
     public string CreatedBy { get; init; }
+
+    public void UpdateName(string newName)
+    {
+        Name = newName;
+    }
+
+    public void UpdateIsActive(bool newState)
+    {
+        IsActive = newState;
+    }
 }

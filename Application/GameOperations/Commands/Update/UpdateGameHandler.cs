@@ -22,14 +22,12 @@ public sealed class UpdateGameHandler : IRequestHandler<UpdateGameCommand, Error
     {
         Guid.TryParse(command.Id, out Guid gameId);
 
-        Game? gameRecord = await _gameRepository.GetById(gameId, cancellationToken);
+        var newGame = new Game(gameId, command.Name, command.IsActive, string.Empty, DateTimeOffset.MinValue);
 
-        if (gameRecord is null)
+        Game? updatedGame = await _gameRepository.FindAndUpdate(newGame, cancellationToken);
+
+        if (updatedGame is null)
             return Errors.Game.NotFound;
-
-        var updatedGame = new Game(gameId, command.Name, command.IsActive, gameRecord.CreatedBy, gameRecord.CreationDate);
-
-        _gameRepository.Update(updatedGame);
 
         await _unitOfWork.SaveAsync(cancellationToken);
 

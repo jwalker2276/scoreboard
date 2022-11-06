@@ -3,6 +3,8 @@ using Api.Contracts.DTO;
 using Api.Contracts.GameRequests;
 using Api.Controllers.Common;
 using Application.GameOperations.Commands.Create;
+using Application.GameOperations.Commands.Delete;
+using Application.GameOperations.Commands.Update;
 using Application.GameOperations.Queries.GetAll;
 using Application.GameOperations.Queries.GetbyId;
 using Domain.Entities;
@@ -51,25 +53,19 @@ public class GameController : ApiController
 
         ErrorOr<Game> queryResult = await _mediator.Send(query, cancellationToken);
 
+        var messageForResponse = "Successfully found game.";
+
         return queryResult.Match(
-            gameData => GetGameSuccessAction(gameData),
+            gameData => GetOkGameSuccessAction(gameData, messageForResponse),
             errors => Problem(errors));
     }
 
-    private IActionResult GetGameSuccessAction(Game gameData)
-    {
-        var responseData = new GameResponse(gameData);
-        var messageForResponse = "Successfully found game.";
-
-        return Ok(new StandardResponse<GameResponse>(responseData, messageForResponse));
-    }
-
     [HttpGet]
-    public async Task<IActionResult> GetAllGames(CancellationToken cancellation)
+    public async Task<IActionResult> GetAllGames(CancellationToken cancellationToken)
     {
         var query = new GetAllGamesQuery();
 
-        ErrorOr<List<Game>> queryResult = await _mediator.Send(query, cancellation);
+        ErrorOr<List<Game>> queryResult = await _mediator.Send(query, cancellationToken);
 
         return queryResult.Match(
             gameData => GetAllGamesSuccessAction(gameData),
@@ -79,50 +75,44 @@ public class GameController : ApiController
     private IActionResult GetAllGamesSuccessAction(List<Game> gameData)
     {
         List<GameResponse> responseData = GameResponseList.CreateGameResponseListFactory(gameData);
+
         var messageForResponse = "Successfully returned all games.";
 
         return Ok(new StandardResponse<List<GameResponse>>(responseData, messageForResponse));
     }
 
-    //[HttpPut]
-    //public async Task<IActionResult> UpdateGame(UpdateStandardGameRequest request)
-    //{
-    //    var game = new GameResponse()
-    //    {
-    //        Id = request.Id.ToString(),
-    //        Name = request.Name,
-    //        IsActive = request.IsActive,
-    //        CreationDate = DateTime.Today,
-    //        CreatedBy = "Sam Smith"
-    //    };
+    [HttpPut]
+    public async Task<IActionResult> UpdateGame(UpdateStandardGameRequest request, CancellationToken cancellationToken)
+    {
+        var command = new UpdateGameCommand(request.Id, request.Name, request.IsActive);
 
-    //    var response = new StandardObjectResponse<GameResponse>()
-    //    {
-    //        Data = game,
-    //        Message = "Successfully updated game"
-    //    };
+        ErrorOr<Game> commandResult = await _mediator.Send(command, cancellationToken);
 
-    //    return Ok(response);
-    //}
+        var messageForResponse = "Successfully updated game.";
 
-    //[HttpDelete("{id}")]
-    //public async Task<IActionResult> DeleteGame(string id)
-    //{
-    //    var game = new GameResponse()
-    //    {
-    //        Id = id,
-    //        Name = "Pac-Man",
-    //        IsActive = false,
-    //        CreationDate = DateTime.Today,
-    //        CreatedBy = "Sam Smith"
-    //    };
+        return commandResult.Match(
+            gameData => GetOkGameSuccessAction(gameData, messageForResponse),
+            errors => Problem(errors));
+    }
 
-    //    var response = new StandardObjectResponse<GameResponse>()
-    //    {
-    //        Data = game,
-    //        Message = "Successfully deleted game"
-    //    };
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteGame(string id, CancellationToken cancellationToken)
+    {
+        var command = new DeleteGameCommand(id);
 
-    //    return Ok(response);
-    //}
+        ErrorOr<Game> commandResult = await _mediator.Send(command, cancellationToken);
+
+        var messageForResponse = "Successfully deleted game.";
+
+        return commandResult.Match(
+            gameData => GetOkGameSuccessAction(gameData, messageForResponse),
+            errors => Problem(errors));
+    }
+
+    private IActionResult GetOkGameSuccessAction(Game gameData, string messageForResponse)
+    {
+        var responseData = new GameResponse(gameData);
+
+        return Ok(new StandardResponse<GameResponse>(responseData, messageForResponse));
+    }
 }

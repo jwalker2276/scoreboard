@@ -10,5 +10,12 @@ public sealed class UpdateGameCommand : IRequest<ErrorOr<Game>>
 
     public string Name { get; init; } = string.Empty;
 
-    public bool IsActive { get; init; } = true;
+    public bool IsActive { get; init; } = false;
+
+    public UpdateGameCommand(string id, string name, bool isActive)
+    {
+        Id = id;
+        Name = name;
+        IsActive = isActive;
+    }
 }
