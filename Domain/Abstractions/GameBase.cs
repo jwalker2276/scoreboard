@@ -2,7 +2,7 @@
 
 namespace Domain.Abstractions;
 
-public abstract class GameBase : Entity
+public abstract class GameBase : Entity<Guid>
 {
     protected GameBase(Guid id, string name, bool isActive, string createdBy, DateTimeOffset creationDate) : base(id)
     {

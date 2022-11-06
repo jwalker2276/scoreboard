@@ -1,6 +1,6 @@
 using Application.Common.Dates;
 using Application.Persistence;
-using Domain.Entities;
+using Domain.Entities.Game;
 using Domain.Errors;
 using ErrorOr;
 using MediatR;

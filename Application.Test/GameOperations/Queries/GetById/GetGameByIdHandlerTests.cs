@@ -1,7 +1,7 @@
 ﻿using Application.GameOperations.Queries.GetbyId;
 using Application.Persistence;
 using Bogus;
-using Domain.Entities;
+using Domain.Entities.Game;
 using Domain.Errors;
 using Domain.Test.Common;
 using ErrorOr;

@@ -9,7 +9,7 @@ using Application.GameOperations.Commands.Update;
 using Application.GameOperations.Queries.GetAll;
 using Application.GameOperations.Queries.GetbyId;
 using Bogus;
-using Domain.Entities;
+using Domain.Entities.Game;
 using Domain.Test.Common;
 using ErrorOr;
 using MediatR;

@@ -10,4 +10,10 @@
       <PackageReference Include="ErrorOr" Version="1.0.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Entities\Game\Entities\" />
+      <Folder Include="Entities\Score\" />
+      <Folder Include="Entities\User\" />
+    </ItemGroup>
+
 </Project>

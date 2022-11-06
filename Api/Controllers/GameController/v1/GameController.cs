@@ -7,7 +7,7 @@ using Application.GameOperations.Commands.Delete;
 using Application.GameOperations.Commands.Update;
 using Application.GameOperations.Queries.GetAll;
 using Application.GameOperations.Queries.GetbyId;
-using Domain.Entities;
+using Domain.Entities.Game;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

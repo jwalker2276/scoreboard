@@ -1,5 +1,5 @@
 ﻿using Bogus;
-using Domain.Entities;
+using Domain.Entities.Game;
 
 namespace Domain.Test.Common;
 public class EntityGenerator

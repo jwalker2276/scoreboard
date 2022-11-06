@@ -1,6 +1,6 @@
 using Domain.Abstractions;
 
-namespace Domain.Entities;
+namespace Domain.Entities.Game;
 
 public sealed class Game : GameBase
 {
