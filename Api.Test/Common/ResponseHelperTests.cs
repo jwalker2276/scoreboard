@@ -1,5 +1,5 @@
 ﻿using Api.Contracts.DTO;
-using Domain.Entities.Game;
+using Domain.Entities.Game.Entities;
 using Domain.Test.Common;
 
 namespace Api.Test.Common;

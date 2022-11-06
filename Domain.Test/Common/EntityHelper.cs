@@ -1,4 +1,4 @@
-﻿using Domain.Entities.Game;
+﻿using Domain.Entities.Game.Entities;
 
 namespace Domain.Test.Common;
 public static class EntityHelper

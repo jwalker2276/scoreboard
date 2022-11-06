@@ -2,7 +2,7 @@
 using Application.GameOperations.Commands.Create;
 using Application.Persistence;
 using Bogus;
-using Domain.Entities.Game;
+using Domain.Entities.Game.Entities;
 using Domain.Errors;
 using ErrorOr;
 using FluentAssertions;

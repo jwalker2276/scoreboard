@@ -1,6 +1,6 @@
 ﻿using Application.Common.Dates;
 using Application.Persistence;
-using Domain.Entities.Game;
+using Domain.Entities.Game.Entities;
 using Infrastructure.Dates;
 using Infrastructure.Options;
 using Infrastructure.Persistence;

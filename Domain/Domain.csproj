@@ -11,9 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Entities\Game\Entities\" />
       <Folder Include="Entities\Score\" />
-      <Folder Include="Entities\User\" />
     </ItemGroup>
 
 </Project>
