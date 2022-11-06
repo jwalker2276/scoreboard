@@ -33,7 +33,7 @@ internal class GameRepository : IRepository<Game>
 
     public async Task<Game?> FindAndUpdate(Game updatedGame, CancellationToken cancellationToken)
     {
-        Game? game = await _dbSet.FirstOrDefaultAsync(x => x.Id == updatedGame.Id, cancellationToken);
+        Game? game = await _dbSet.FirstOrDefaultAsync(record => record.Id == updatedGame.Id, cancellationToken);
 
         if (game is null) return null;
 
@@ -43,8 +43,14 @@ internal class GameRepository : IRepository<Game>
         return game;
     }
 
-    public void Delete(Game game)
+    public async Task<Game?> FindAndDelete(Guid id, CancellationToken cancellationToken)
     {
-        _dbSet.Remove(game);
+        Game? deletedGame = await _dbSet.FirstOrDefaultAsync(record => record.Id == id, cancellationToken);
+
+        if (deletedGame is null) return null;
+
+        _dbSet.Remove(deletedGame);
+
+        return deletedGame;
     }
 }

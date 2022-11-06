@@ -8,13 +8,13 @@ namespace Application.GameOperations.Commands.Delete;
 
 public sealed class DeleteGameHandler : IRequestHandler<DeleteGameCommand, ErrorOr<Game>>
 {
-    private readonly IRepository<Game> _repository;
+    private readonly IRepository<Game> _gameRepository;
 
     private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteGameHandler(IRepository<Game> repository, IUnitOfWork unitOfWork)
+    public DeleteGameHandler(IRepository<Game> gameRepository, IUnitOfWork unitOfWork)
     {
-        _repository = repository;
+        _gameRepository = gameRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -22,14 +22,13 @@ public sealed class DeleteGameHandler : IRequestHandler<DeleteGameCommand, Error
     {
         Guid.TryParse(command.Id, out Guid gameId);
 
-        Game? game = await _repository.GetById(gameId, cancellationToken);
+        Game? gameToDelete = await _gameRepository.FindAndDelete(gameId, cancellationToken);
 
-        if (game is null) return Errors.Game.NotFound;
-
-        _repository.Delete(game);
+        if (gameToDelete is null)
+            return Errors.Game.NotFound;
 
         await _unitOfWork.SaveAsync(cancellationToken);
 
-        return game;
+        return gameToDelete;
     }
 }

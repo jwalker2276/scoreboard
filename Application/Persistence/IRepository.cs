@@ -11,5 +11,5 @@ public interface IRepository<TEntity>
 
     public Task<TEntity?> FindAndUpdate(TEntity updatedEntity, CancellationToken cancellationToken);
 
-    public void Delete(TEntity entity);
+    public Task<TEntity?> FindAndDelete(Guid id, CancellationToken cancellationToken);
 }
