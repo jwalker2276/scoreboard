@@ -15,7 +15,7 @@ public abstract class PlayerBase : Entity<Guid>
 
     public string DefaultPlayerName { get; private set; }
 
-    public string PreferredPlayerName { get; private set; }
+    public string? PreferredPlayerName { get; private set; }
 
     public bool IsPlayerNameApproved { get; private set; }
 
