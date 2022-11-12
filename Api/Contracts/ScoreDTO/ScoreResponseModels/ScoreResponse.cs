@@ -1,12 +1,19 @@
-﻿namespace Api.Contracts.ScoreDTO.ScoreResponseModels;
+﻿using Api.Contracts.PlayerDTO.PlayerResponseModels;
 
-public class CreateScoreResponse
+namespace Api.Contracts.ScoreDTO.ScoreResponseModels;
+
+public class ScoreResponse
 {
-    public string GameId { get; set; } = string.Empty;
+    public string GameId { get; init; }
 
-    public int Score { get; set; }
+    public int Score { get; init; }
 
-    public string PlayerName { get; set; } = string.Empty;
+    public PlayerNameResponse Player { get; init; }
 
-    public bool IsRequestedNameApproved { get; set; }
+    public ScoreResponse(string gameId, int score, PlayerNameResponse playerResponse)
+    {
+        GameId = gameId;
+        Score = score;
+        Player = playerResponse;
+    }
 }
