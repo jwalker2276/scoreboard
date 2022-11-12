@@ -1,5 +1,6 @@
-using Api.Contracts.CommonDTO;
-using Api.Contracts.DTO;
+using Api.Contracts.DTO.Common;
+using Api.Contracts.GameDTO.GameRequestModels;
+using Api.Contracts.GameDTO.GameResponseModels;
 using Api.Contracts.GameRequests;
 using Api.Controllers.GameController.v1;
 using Api.Test.Common;
@@ -8,8 +9,7 @@ using Application.GameOperations.Commands.Delete;
 using Application.GameOperations.Commands.Update;
 using Application.GameOperations.Queries.GetAll;
 using Application.GameOperations.Queries.GetbyId;
-using Bogus;
-using Domain.Entities.Game.Entities;
+using Domain.GameModels.Entities;
 using Domain.Test.Common;
 using ErrorOr;
 using MediatR;
@@ -20,16 +20,12 @@ namespace Api.Test.Controllers.v1;
 
 public class GameControllerTests
 {
-    private readonly Faker _faker;
-
     private readonly EntityGenerator _entityGenerator;
 
     private readonly ISender _mediator = Substitute.For<ISender>();
 
     public GameControllerTests()
     {
-        _faker = new Faker();
-
         _entityGenerator = new EntityGenerator();
     }
 

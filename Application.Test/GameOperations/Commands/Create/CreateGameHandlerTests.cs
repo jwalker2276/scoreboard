@@ -2,8 +2,8 @@
 using Application.GameOperations.Commands.Create;
 using Application.Persistence;
 using Bogus;
-using Domain.Entities.Game.Entities;
 using Domain.Errors;
+using Domain.GameModels.Entities;
 using ErrorOr;
 using FluentAssertions;
 using NSubstitute;

@@ -1,4 +1,4 @@
-﻿using Api.Common.Http;
+﻿using Api.HttpCommon.HttpSettings;
 using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;

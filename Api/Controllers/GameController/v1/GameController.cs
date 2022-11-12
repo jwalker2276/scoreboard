@@ -1,5 +1,6 @@
-using Api.Contracts.CommonDTO;
-using Api.Contracts.DTO;
+using Api.Contracts.DTO.Common;
+using Api.Contracts.GameDTO.GameRequestModels;
+using Api.Contracts.GameDTO.GameResponseModels;
 using Api.Contracts.GameRequests;
 using Api.Controllers.Common;
 using Application.GameOperations.Commands.Create;
@@ -7,7 +8,7 @@ using Application.GameOperations.Commands.Delete;
 using Application.GameOperations.Commands.Update;
 using Application.GameOperations.Queries.GetAll;
 using Application.GameOperations.Queries.GetbyId;
-using Domain.Entities.Game.Entities;
+using Domain.GameModels.Entities;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,4 @@
-﻿using Api.Contracts.DTO;
+﻿using Api.Contracts.GameDTO.GameResponseModels;
 
 namespace Api.Test.Common;
 

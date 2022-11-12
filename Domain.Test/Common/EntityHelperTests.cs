@@ -1,4 +1,4 @@
-﻿using Domain.Entities.Game.Entities;
+﻿using Domain.GameModels.Entities;
 
 namespace Domain.Test.Common;
 

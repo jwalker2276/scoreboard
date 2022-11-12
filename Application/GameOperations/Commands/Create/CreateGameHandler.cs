@@ -1,7 +1,7 @@
 using Application.Common.Dates;
 using Application.Persistence;
-using Domain.Entities.Game.Entities;
 using Domain.Errors;
+using Domain.GameModels.Entities;
 using ErrorOr;
 using MediatR;
 

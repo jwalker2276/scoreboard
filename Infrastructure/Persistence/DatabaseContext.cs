@@ -1,5 +1,5 @@
-﻿using Domain.Entities.Game.Entities;
-using Domain.Entities.Player.Enitites;
+﻿using Domain.GameModels.Entities;
+using Domain.PlayerModels.Enitites;
 using Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,8 +1,8 @@
 ﻿using Application.GameOperations.Queries.GetbyId;
 using Application.Persistence;
 using Bogus;
-using Domain.Entities.Game.Entities;
 using Domain.Errors;
+using Domain.GameModels.Entities;
 using Domain.Test.Common;
 using ErrorOr;
 using FluentAssertions;

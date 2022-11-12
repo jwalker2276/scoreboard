@@ -1,4 +1,4 @@
-﻿using Domain.Entities.Player.Enitites;
+﻿using Domain.PlayerModels.Enitites;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

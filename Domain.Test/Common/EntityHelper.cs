@@ -1,6 +1,7 @@
-﻿using Domain.Entities.Game.Entities;
+﻿using Domain.GameModels.Entities;
 
 namespace Domain.Test.Common;
+
 public static class EntityHelper
 {
     public static bool DoAllGamesValuesMatch(Game first, Game second)

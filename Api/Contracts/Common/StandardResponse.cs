@@ -1,4 +1,4 @@
-﻿namespace Api.Contracts.CommonDTO;
+﻿namespace Api.Contracts.DTO.Common;
 
 public class StandardResponse<T>
 {

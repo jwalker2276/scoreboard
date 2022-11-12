@@ -1,6 +1,6 @@
-﻿using Domain.Entities.Game.Entities;
+﻿using Domain.GameModels.Entities;
 
-namespace Api.Contracts.DTO;
+namespace Api.Contracts.GameDTO.GameResponseModels;
 
 public class GameResponseList
 {
@@ -9,7 +9,9 @@ public class GameResponseList
     private GameResponseList(List<Game> games)
     {
         foreach (Game game in games)
+        {
             GameResponseCollection.Add(new GameResponse(game));
+        }
     }
 
     public static List<GameResponse> CreateGameResponseListFactory(List<Game> games)

@@ -1,5 +1,5 @@
 ﻿using Application.Persistence;
-using Domain.Entities.Game.Entities;
+using Domain.GameModels.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;

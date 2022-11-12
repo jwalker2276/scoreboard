@@ -1,7 +1,8 @@
 ﻿using Bogus;
-using Domain.Entities.Game.Entities;
+using Domain.GameModels.Entities;
 
 namespace Domain.Test.Common;
+
 public class EntityGenerator
 {
     private readonly Faker _faker;

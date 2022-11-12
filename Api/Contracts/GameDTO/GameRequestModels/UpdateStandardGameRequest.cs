@@ -1,4 +1,4 @@
-namespace Api.Contracts.GameRequests;
+namespace Api.Contracts.GameDTO.GameRequestModels;
 
 public class UpdateStandardGameRequest
 {

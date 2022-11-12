@@ -1,6 +1,6 @@
-using Domain.Entities.Game.Entities;
+using Domain.GameModels.Entities;
 
-namespace Api.Contracts.DTO;
+namespace Api.Contracts.GameDTO.GameResponseModels;
 
 public class GameResponse
 {

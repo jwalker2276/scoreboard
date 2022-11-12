@@ -1,4 +1,4 @@
-﻿using Domain.Entities.Game.Entities;
+﻿using Domain.GameModels.Entities;
 
 namespace Domain.Test.Common;
 
@@ -36,6 +36,6 @@ public class EntityGeneratorTests
 
         List<Game> testGamesList = generator.GetMockGames(gamesCount);
 
-        Assert.Equal(testGamesList.Count(), gamesCount);
+        Assert.Equal(testGamesList.Count, gamesCount);
     }
 }
