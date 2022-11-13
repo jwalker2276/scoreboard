@@ -2,10 +2,10 @@
 
 public class TopScoresOfAllTimeResposne
 {
-    List<ScoreResponse> Scores { get; init; }
+    List<ScoreAggregateRootResponse> Scores { get; init; }
 
     public TopScoresOfAllTimeResposne()
     {
-        Scores = new List<ScoreResponse>();
+        Scores = new List<ScoreAggregateRootResponse>();
     }
 }
