@@ -91,14 +91,17 @@ Response
 }
 ```
 
-### List scores
+### Scoreboard setup
 
-List top ten scores of all time.
+Setup a scoreboard
 
 Request
 ```json
 {
-  "gameId": "99852beb-6fe3-4927-86b1-ec736e754795"
+  "gameId": "99852beb-6fe3-4927-86b1-ec736e754795",
+  "name": "Top ten scores of all time.",
+  "maxNumberOfScores": 10,
+  "sortby": "Descending"
 }
 ```
 

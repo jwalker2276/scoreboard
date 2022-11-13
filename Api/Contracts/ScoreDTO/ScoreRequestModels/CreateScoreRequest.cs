@@ -1,4 +1,4 @@
-﻿namespace Api.Contracts.ScoreRequests;
+﻿namespace Api.Contracts.ScoreDTO.ScoreRequestModels;
 
 public class CreateScoreRequest
 {

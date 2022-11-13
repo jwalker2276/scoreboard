@@ -4,7 +4,13 @@ namespace Domain.Abstractions;
 
 public abstract class PlayerBase : Entity<Guid>
 {
-    protected PlayerBase(Guid id, string defaultPlayerName, string preferredPlayerName, bool isPlayerNameApproved, DateTimeOffset creationDate, string createdBy) : base(id)
+    protected PlayerBase(
+        Guid id,
+        string defaultPlayerName,
+        string preferredPlayerName,
+        bool isPlayerNameApproved,
+        DateTimeOffset creationDate,
+        string createdBy) : base(id)
     {
         DefaultPlayerName = defaultPlayerName;
         PreferredPlayerName = preferredPlayerName;
