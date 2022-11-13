@@ -5,8 +5,7 @@
 This api allows recording of a user's score for a specific game. In order for this to occur a few operation must happen before a score can be record.
 
 1. Create Game that scores and players can be associated with.
-2. After score is generated from game, user can create a display name.
-3. Once a player and score are setup, a request can be made to record it with the service.
+2. Once a player's name is entered and a score are setup, a request can be made to record it with the service.
 
 Also a playground to try out Domain Drive Design, Clean Architecture, and new tech.
 
@@ -40,9 +39,9 @@ Response
 }
 ```
 
-### Player name check
+### Player name select
 
-Check if requested player name is available.
+Choose a display name for the scoreboard.
 
 Request
 ```json
@@ -51,13 +50,14 @@ Request
 }
 ```
 
-Resposne
+Response
 ```json
 {
   "data": {
-    "isNameAvailable": true, // or false
-   },
-   "message": "Successfully checked name."
+    "isNameAvailable": true,
+    "isNameAllowed": true
+  },
+  "message": "Successfully checked name."
 }
 ```
 
@@ -79,12 +79,13 @@ Response
 {
   "data": {
     "gameId": "99852beb-6fe3-4927-86b1-ec736e754795",
-    "score": 25123,
-    "player": {
-      "requestedName": "jwalker2276",
-      "publicName": "player123",
-      "nameReviewState": "underReview"
+    "score": {
+      "value": 25123,
+      "recordDate": "2022-12-12T16:38:18.993842-06:00"
     },
+    "player": {
+      "displayName": "jwalker2276",
+    }
   },
   "message": "Successfully created score."
 }
@@ -106,61 +107,91 @@ Response
 {
   "data": [
     {
-      "score": 25123,
+      "score": {
+        "value": 25123,
+        "recordDate": "2022-12-12T16:38:18.993842-06:00"
+      },
       "player": {
         "publicName": "jwalker2276",
       },
     },
     {
-      "score": 25122,
+      "score": {
+        "value": 25122,
+        "recordDate": "2022-12-12T16:38:18.993842-06:00"
+      },
       "player": {
         "publicName": "player56",
       },
     },
     {
-      "score": 25121,
+      "score": {
+        "value": 25121,
+        "recordDate": "2022-12-12T16:38:18.993842-06:00"
+      },
       "player": {
         "publicName": "player34",
       },
     },
     {
-      "score": 25120,
+      "score": {
+        "value": 25120,
+        "recordDate": "2022-12-12T16:38:18.993842-06:00"
+      },
       "player": {
         "publicName": "player134",
       },
     },
     {
-      "score": 24000,
+      "score": {
+        "value": 24000,
+        "recordDate": "2022-12-12T16:38:18.993842-06:00"
+      },
       "player": {
         "publicName": "player10",
       },
     },
     {
-      "score": 24399,
+      "score": {
+        "value": 24399,
+        "recordDate": "2022-12-12T16:38:18.993842-06:00"
+      },
       "player": {
         "publicName": "player100",
       },
     },
     {
-      "score": 24356,
+      "score": {
+        "value": 24356,
+        "recordDate": "2022-12-12T16:38:18.993842-06:00"
+      },
       "player": {
         "publicName": "player129",
       },
     },
     {
-      "score": 24325,
+      "score": {
+        "value": 24325,
+        "recordDate": "2022-12-12T16:38:18.993842-06:00"
+      },
       "player": {
         "publicName": "player1",
       },
     },
     {
-      "score": 24123,
+      "score": {
+        "value": 24123,
+        "recordDate": "2022-12-12T16:38:18.993842-06:00"
+      },
       "player": {
         "publicName": "player145",
       },
     },
     {
-      "score": 24122,
+      "score": {
+        "value": 24122,
+        "recordDate": "2022-12-12T16:38:18.993842-06:00"
+      },
       "player": {
         "publicName": "player12",
       },
