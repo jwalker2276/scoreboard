@@ -7,14 +7,14 @@ public abstract class ScoreBoardBase : AggregateRoot<Guid>
     protected ScoreBoardBase(
         Guid id,
         Guid gameId,
-        string boardName,
+        string name,
         int maxNumberOfScores,
         SortRule sortBy,
         DateTimeOffset creationDate,
         string createdBy) : base(id)
     {
         GameId = gameId;
-        Name = boardName;
+        Name = name;
         MaxNumberOfScores = maxNumberOfScores;
         SortBy = sortBy;
         CreationDate = creationDate;
