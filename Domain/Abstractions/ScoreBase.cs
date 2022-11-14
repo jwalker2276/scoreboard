@@ -6,7 +6,7 @@ public abstract class ScoreBase : Entity<Guid>
 {
     protected ScoreBase(
         Guid id,
-        double value,
+        int value,
         DateTimeOffset creationDate,
         string createdBy,
         Guid gameId,
@@ -19,7 +19,7 @@ public abstract class ScoreBase : Entity<Guid>
         PlayerId = playerId;
     }
 
-    public double Value { get; init; }
+    public int Value { get; init; }
 
     public DateTimeOffset CreationDate { get; init; }
 

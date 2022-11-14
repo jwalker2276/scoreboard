@@ -5,7 +5,7 @@ public sealed class Score : ScoreBase
 {
     public Score(
         Guid id,
-        double value,
+        int value,
         DateTimeOffset creationDate,
         string createdBy,
         Guid gameId,

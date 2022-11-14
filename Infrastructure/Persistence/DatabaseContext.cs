@@ -1,5 +1,6 @@
 ﻿using Domain.GameModels.Entities;
 using Domain.PlayerModels.Enitites;
+using Domain.ScoreModels.Entities;
 using Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,9 +14,14 @@ public sealed class DatabaseContext : DbContext
 
     public DbSet<Player>? Players { get; set; }
 
+    public DbSet<Score>? Scores { get; set; }
+
+    //public DbSet<ScoreBoard>? ScoreBoards { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         new GameConfiguration().Configure(modelBuilder.Entity<Game>());
         new PlayerConfiguration().Configure(modelBuilder.Entity<Player>());
+        new ScoreConfiguration().Configure(modelBuilder.Entity<Score>());
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Domain.Abstractions;
 using Domain.Common;
+using Domain.ScoreModels.Entities;
 
 namespace Domain.ScoreBoardModels.Entities;
 
@@ -15,4 +16,6 @@ public class ScoreBoard : ScoreBoardBase
         string createdBy) : base(id, gameId, boardName, maxNumberOfScores, sortBy, creationDate, createdBy)
     {
     }
+
+    public IReadOnlyCollection<Score> Scores { get; set; }
 }
