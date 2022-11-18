@@ -1,6 +1,7 @@
 ﻿using Domain.Abstractions;
+using Domain.GameModels.Entities;
 
-namespace Domain.PlayerModels.Enitites;
+namespace Domain.PlayerModels.Entities;
 
 public sealed class Player : PlayerBase
 {
@@ -10,4 +11,6 @@ public sealed class Player : PlayerBase
         base(id, defaultPlayerName, preferredPlayerName, isPlayerNameApproved, creationDate, createdBy)
     {
     }
+
+    public ICollection<Game> Games { get; set; }
 }

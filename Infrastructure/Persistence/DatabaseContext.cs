@@ -1,5 +1,5 @@
 ﻿using Domain.GameModels.Entities;
-using Domain.PlayerModels.Enitites;
+using Domain.PlayerModels.Entities;
 using Domain.ScoreBoardModels.Entities;
 using Domain.ScoreModels.Entities;
 using Infrastructure.EntityConfigurations;

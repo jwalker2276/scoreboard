@@ -1,5 +1,5 @@
 ﻿using Api.Contracts.PlayerDTO.PlayerResponseModels;
-using Domain.PlayerModels.Enitites;
+using Domain.PlayerModels.Entities;
 using Domain.ScoreModels.Entities;
 
 namespace Api.Contracts.ScoreDTO.ScoreResponseModels;

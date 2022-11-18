@@ -1,4 +1,5 @@
 using Domain.Abstractions;
+using Domain.PlayerModels.Entities;
 
 namespace Domain.GameModels.Entities;
 
@@ -8,4 +9,6 @@ public sealed class Game : GameBase
         base(id, name, isActive, createdBy, creationDate)
     {
     }
+
+    public ICollection<Player> Players { get; set; }
 }

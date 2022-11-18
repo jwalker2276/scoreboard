@@ -1,6 +1,6 @@
 ﻿using Api.Contracts.PlayerDTO.PlayerResponseModels;
 using Api.Contracts.ScoreDTO.ScoreResponseModels;
-using Domain.PlayerModels.Enitites;
+using Domain.PlayerModels.Entities;
 using Domain.ScoreModels.Entities;
 
 namespace Api.Contracts.ScoreBoardDTO.ScoreBoardResponseModels;

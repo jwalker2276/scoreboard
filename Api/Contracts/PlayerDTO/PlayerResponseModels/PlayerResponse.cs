@@ -1,4 +1,4 @@
-﻿using Domain.PlayerModels.Enitites;
+﻿using Domain.PlayerModels.Entities;
 
 namespace Api.Contracts.PlayerDTO.PlayerResponseModels;
 
