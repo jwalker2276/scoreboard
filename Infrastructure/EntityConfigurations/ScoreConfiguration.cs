@@ -11,22 +11,28 @@ internal class ScoreConfiguration : IEntityTypeConfiguration<Score>
         builder.ToTable("Scores");
 
         builder.Property(x => x.Id)
+            .HasColumnOrder(0)
             .IsRequired();
 
         builder.Property(x => x.Value)
+            .HasColumnOrder(1)
             .IsRequired();
 
-        builder.Property(x => x.GameId)
+        builder.Property(x => x.ScoreBoardId)
+            .HasColumnOrder(2)
             .IsRequired();
 
         builder.Property(x => x.PlayerId)
+            .HasColumnOrder(3)
             .IsRequired();
 
         builder.Property(x => x.CreationDate)
+            .HasColumnOrder(4)
             .IsRequired();
 
         builder.Property(x => x.CreatedBy)
             .IsRequired()
+            .HasColumnOrder(5)
             .HasMaxLength(256);
     }
 }

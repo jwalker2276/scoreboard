@@ -4,6 +4,7 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20221120005121_AddOtherRelationships")]
+    partial class AddOtherRelationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,9 +45,6 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<Guid?>("ScoreBoardId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -126,36 +125,28 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(0);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)")
-                        .HasColumnOrder(5);
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<DateTimeOffset>("CreationDate")
-                        .HasColumnType("datetimeoffset")
-                        .HasColumnOrder(4);
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PlayerId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(3);
-
-                    b.Property<Guid>("ScoreBoardId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(2);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Value")
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PlayerId");
-
-                    b.HasIndex("ScoreBoardId");
 
                     b.ToTable("Scores", (string)null);
                 });
@@ -177,32 +168,20 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.ScoreBoardModels.Entities.ScoreBoard", b =>
                 {
-                    b.HasOne("Domain.GameModels.Entities.Game", "Game")
+                    b.HasOne("Domain.GameModels.Entities.Game", null)
                         .WithOne("ScoreBoard")
                         .HasForeignKey("Domain.ScoreBoardModels.Entities.ScoreBoard", "GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Game");
                 });
 
             modelBuilder.Entity("Domain.ScoreModels.Entities.Score", b =>
                 {
-                    b.HasOne("Domain.PlayerModels.Entities.Player", "Player")
+                    b.HasOne("Domain.PlayerModels.Entities.Player", null)
                         .WithMany("Scores")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Domain.ScoreBoardModels.Entities.ScoreBoard", "ScoreBoard")
-                        .WithMany("Scores")
-                        .HasForeignKey("ScoreBoardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Player");
-
-                    b.Navigation("ScoreBoard");
                 });
 
             modelBuilder.Entity("GamePlayer", b =>
@@ -222,15 +201,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.GameModels.Entities.Game", b =>
                 {
-                    b.Navigation("ScoreBoard");
+                    b.Navigation("ScoreBoard")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.PlayerModels.Entities.Player", b =>
-                {
-                    b.Navigation("Scores");
-                });
-
-            modelBuilder.Entity("Domain.ScoreBoardModels.Entities.ScoreBoard", b =>
                 {
                     b.Navigation("Scores");
                 });

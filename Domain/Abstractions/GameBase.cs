@@ -17,9 +17,12 @@ public abstract class GameBase : Entity<Guid>
         CreatedBy = createdBy;
     }
 
+    public Guid? ScoreBoardId { get; private set; }
+
     public string Name { get; private set; }
 
     public bool IsActive { get; private set; }
+
 
     public DateTimeOffset CreationDate { get; init; }
 
@@ -33,5 +36,10 @@ public abstract class GameBase : Entity<Guid>
     public void UpdateIsActive(bool newState)
     {
         IsActive = newState;
+    }
+
+    public void UpdateScoreBoardId(Guid id)
+    {
+        ScoreBoardId = id;
     }
 }

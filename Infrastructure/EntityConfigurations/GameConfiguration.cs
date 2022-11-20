@@ -20,6 +20,9 @@ internal class GameConfiguration : IEntityTypeConfiguration<Game>
         builder.Property(x => x.IsActive)
             .IsRequired();
 
+        builder.Property(x => x.ScoreBoardId)
+            .HasDefaultValue(null);
+
         builder.Property(x => x.CreationDate)
             .IsRequired();
 
