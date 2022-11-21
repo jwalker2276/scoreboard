@@ -8,5 +8,5 @@ public class CreateScoreBoardRequest
 
     public int MaxNumberOfScores { get; set; } = 0;
 
-    public string SortBy { get; set; } = string.Empty;
+    public string CreatedBy { get; set; } = string.Empty;
 }

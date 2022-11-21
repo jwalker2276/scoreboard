@@ -29,8 +29,8 @@ public sealed class UpdateGameHandler : IRequestHandler<UpdateGameCommand, Error
         if (updatedGame is null)
             return Errors.Game.NotFound;
 
-        await _unitOfWork.SaveAsync(cancellationToken);
+        var hasErrorOccurred = await _unitOfWork.SaveAsync(cancellationToken);
 
-        return updatedGame;
+        return hasErrorOccurred ? (ErrorOr<Game>)Errors.Game.CreateError : (ErrorOr<Game>)updatedGame;
     }
 }
