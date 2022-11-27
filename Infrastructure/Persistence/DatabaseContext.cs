@@ -2,6 +2,7 @@
 using Domain.PlayerModels.Entities;
 using Domain.ScoreBoardModels.Entities;
 using Domain.ScoreModels.Entities;
+using Infrastructure.CustomModels;
 using Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,13 +12,15 @@ public sealed class DatabaseContext : DbContext
 {
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
-    public DbSet<Game>? Games { get; set; }
+    internal DbSet<Game>? Games { get; set; }
 
-    public DbSet<Player>? Players { get; set; }
+    internal DbSet<Player>? Players { get; set; }
 
-    public DbSet<Score>? Scores { get; set; }
+    internal DbSet<Score>? Scores { get; set; }
 
-    public DbSet<ScoreBoard>? ScoreBoards { get; set; }
+    internal DbSet<ScoreBoard>? ScoreBoards { get; set; }
+
+    internal DbSet<PlayerNameBlackList>? PlayerNameBlackLists { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,5 +28,6 @@ public sealed class DatabaseContext : DbContext
         new PlayerConfiguration().Configure(modelBuilder.Entity<Player>());
         new ScoreConfiguration().Configure(modelBuilder.Entity<Score>());
         new ScoreBoardConfiguration().Configure(modelBuilder.Entity<ScoreBoard>());
+        new PlayerNameBlackListConfiguration().Configure(modelBuilder.Entity<PlayerNameBlackList>());
     }
 }
