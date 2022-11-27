@@ -3,6 +3,7 @@ using Api.Contracts.ScoreBoardDTO.ScoreBoardRequestModels;
 using Api.Contracts.ScoreBoardDTO.ScoreBoardResponseModels;
 using Api.Controllers.Common;
 using Application.ScoreBoardOperations.Commands.Create;
+using Application.ScoreBoardOperations.Queries.GetById;
 using Domain.ScoreBoardModels.Entities;
 using ErrorOr;
 using MediatR;
@@ -45,10 +46,21 @@ public class ScoreBoardController : ApiController
     [HttpGet("{id}")]
     public async Task<IActionResult> GetScoreBoard(string id, CancellationToken cancellationToken)
     {
-        return NoContent();
+        var query = new GetScoreBoardByIdQuery(id);
+
+        ErrorOr<ScoreBoard> queryResult = await _mediator.Send(query, cancellationToken);
+
+        var messageForResponse = "Successfully found scoreboard.";
+
+        return queryResult.Match(
+            gameData => GetOkScoreBoardSuccessAction(gameData, messageForResponse),
+            errors => Problem(errors));
+    }
+
+    private IActionResult GetOkScoreBoardSuccessAction(ScoreBoard gameData, string messageForResponse)
+    {
+        var responseData = new ScoreBoardResponse(gameData);
+
+        return Ok(new StandardResponse<ScoreBoardResponse>(responseData, messageForResponse));
     }
 }
-
-
-
-
