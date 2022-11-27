@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.ScoreBoardController.v1;
 
-[Route("api/v1/scoreboard")]
+[Route("api/v1/scoreboards")]
 public class ScoreBoardController : ApiController
 {
     private readonly ISender _mediator;

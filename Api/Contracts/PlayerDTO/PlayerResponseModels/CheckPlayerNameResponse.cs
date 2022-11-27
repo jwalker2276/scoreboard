@@ -2,7 +2,10 @@
 
 public class CheckPlayerNameResponse
 {
-    public bool IsNameAvailable { get; set; }
+    public bool IsNameAvailable { get; init; }
 
-    public bool IsNameAlloweed { get; set; }
+    public CheckPlayerNameResponse(bool isNameAvailable)
+    {
+        IsNameAvailable = isNameAvailable;
+    }
 }
