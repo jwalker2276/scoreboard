@@ -20,7 +20,7 @@ public sealed class DatabaseContext : DbContext
 
     internal DbSet<ScoreBoard>? ScoreBoards { get; set; }
 
-    internal DbSet<PlayerNameBlackList>? PlayerNameBlackLists { get; set; }
+    internal DbSet<BlackListWord>? PlayerNameBlackLists { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -28,6 +28,6 @@ public sealed class DatabaseContext : DbContext
         new PlayerConfiguration().Configure(modelBuilder.Entity<Player>());
         new ScoreConfiguration().Configure(modelBuilder.Entity<Score>());
         new ScoreBoardConfiguration().Configure(modelBuilder.Entity<ScoreBoard>());
-        new PlayerNameBlackListConfiguration().Configure(modelBuilder.Entity<PlayerNameBlackList>());
+        new BlackListWordsConfiguration().Configure(modelBuilder.Entity<BlackListWord>());
     }
 }

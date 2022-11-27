@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.EntityConfigurations;
 
-internal class PlayerNameBlackListConfiguration : IEntityTypeConfiguration<PlayerNameBlackList>
+internal class BlackListWordsConfiguration : IEntityTypeConfiguration<BlackListWord>
 {
-    public void Configure(EntityTypeBuilder<PlayerNameBlackList> builder)
+    public void Configure(EntityTypeBuilder<BlackListWord> builder)
     {
-        builder.ToTable("PlayerNameBlackList");
+        builder.ToTable("BlackListWords");
 
         builder.Property(n => n.NotAllowedWordOrCharacters)
             .IsRequired()
