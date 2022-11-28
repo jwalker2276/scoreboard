@@ -1,7 +1,7 @@
 ﻿using Application.Common.Dates;
 using Application.Persistence;
+using Application.Services;
 using Domain.GameModels.Entities;
-using Domain.PlayerModels.Entities;
 using Domain.ScoreBoardModels.Entities;
 using Infrastructure.Dates;
 using Infrastructure.Options;
@@ -37,8 +37,12 @@ public static class DependencyInjection
 
         services.AddScoped<IRepository<Game>, GameRepository>();
         services.AddScoped<IRepository<ScoreBoard>, ScoreBoardRepository>();
-        services.AddScoped<IRepository<Player>, PlayerRepository>();
+        services.AddScoped<IPlayerRepository, PlayerRepository>();
+
+        services.AddScoped<IBlackListService, BlackListRepository>();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
         return services;

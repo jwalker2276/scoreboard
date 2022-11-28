@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.PlayerOperations.Queries.CheckIfNameExist;
 
-public class CheckIfNameExistQuery : IRequest<ErrorOr<Player>>
+public class CheckIfNameExistQuery : IRequest<ErrorOr<Player?>>
 {
     public string Name { get; init; }
 
