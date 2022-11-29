@@ -2,5 +2,5 @@
 
 public interface IBlackListService
 {
-    public Task<bool> DoesWordExistInBlackList(string wordToCheck, CancellationToken cancellationToken);
+    public Task<bool> IsWordApproved(string wordToCheck, CancellationToken cancellationToken);
 }

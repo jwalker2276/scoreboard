@@ -1,4 +1,5 @@
 ﻿using Api.Contracts.DTO.Common;
+using Api.Contracts.PlayerDTO.PlayerRequestModels;
 using Api.Contracts.PlayerDTO.PlayerResponseModels;
 using Api.Controllers.Common;
 using Application.PlayerOperations.Queries.CheckIfNameExist;
@@ -19,10 +20,10 @@ public class PlayerController : ApiController
         _mediator = mediator;
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetPlayerName(string name, CancellationToken cancellationToken)
+    [HttpPost]
+    public async Task<IActionResult> GetPlayerName(CheckPlayerNameRequest request, CancellationToken cancellationToken)
     {
-        var query = new CheckIfNameExistQuery(name);
+        var query = new CheckIfNameExistQuery(request.Name);
 
         ErrorOr<Player> queryResult = await _mediator.Send(query, cancellationToken);
 

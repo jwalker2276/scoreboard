@@ -16,11 +16,12 @@ public class BlackListRepository : IBlackListService
         _dbBlackListWords = _databaseContext.Set<BlackListWord>();
     }
 
-    public async Task<bool> DoesWordExistInBlackList(string wordToCheck, CancellationToken cancellationToken)
+    public async Task<bool> IsWordApproved(string wordToCheck, CancellationToken cancellationToken)
     {
-        List<BlackListWord> matches = await _dbBlackListWords.Where(words => words.NotAllowedWordOrCharacters.Contains(wordToCheck))
-                                                             .ToListAsync(cancellationToken);
+        List<BlackListWord> matches = await _dbBlackListWords
+            .Where(words => words.NotAllowedWordOrCharacters.Contains(wordToCheck))
+            .ToListAsync(cancellationToken);
 
-        return matches.Count > 0;
+        return !matches.Any();
     }
 }
