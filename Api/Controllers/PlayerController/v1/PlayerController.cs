@@ -3,6 +3,7 @@ using Api.Contracts.PlayerDTO.PlayerRequestModels;
 using Api.Contracts.PlayerDTO.PlayerResponseModels;
 using Api.Controllers.Common;
 using Application.PlayerOperations.Queries.CheckIfNameExist;
+using Domain.Errors;
 using Domain.PlayerModels.Entities;
 using ErrorOr;
 using MediatR;
@@ -30,7 +31,7 @@ public class PlayerController : ApiController
         var messageForResponse = "Successfully checked name.";
 
         return !queryResult.Value.IsPlayerNameApproved
-            ? ValidationProblem("Name contains unacceptable words or characters.")
+            ? ValidationProblem(Errors.Player.PlayerNameInvalid.Description)
             : queryResult.Match(
             nameCheckData => GetOkSuccessAction(nameCheckData, messageForResponse),
             errors => Problem(errors));

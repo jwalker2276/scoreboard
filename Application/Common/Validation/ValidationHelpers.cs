@@ -17,4 +17,9 @@ public static class ValidationHelper
     {
         return Guid.TryParse(idToCheck, out _);
     }
+
+    public static bool IsOneOfTheStringsValid(string inputA, string inputB)
+    {
+        return !string.IsNullOrWhiteSpace(inputA) || !string.IsNullOrWhiteSpace(inputB);
+    }
 }
