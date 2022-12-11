@@ -25,6 +25,11 @@ public class CreateScoreCommandValidator : AbstractValidator<CreateScoreCommand>
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .Must(ValidationHelper.IsAGuid);
+
+        RuleFor(s => s.CreatedBy)
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+            .Must(ValidationHelper.HaveAcceptableCharacters);
     }
 
     private bool IsOneOfTheNamesValid(PlayerName playerDetails)

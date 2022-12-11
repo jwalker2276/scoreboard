@@ -13,10 +13,13 @@ public class CreateScoreCommand : IRequest<ErrorOr<Score>>
 
     public string ScoreBoardId { get; init; }
 
-    public CreateScoreCommand(int value, PlayerName playerDetails, string scoreBoardId)
+    public string CreatedBy { get; init; }
+
+    public CreateScoreCommand(int value, PlayerName playerDetails, string scoreBoardId, string createdBy)
     {
         Value = value;
         PlayerDetails = playerDetails;
         ScoreBoardId = scoreBoardId;
+        CreatedBy = createdBy;
     }
 }

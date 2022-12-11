@@ -43,32 +43,20 @@ public sealed class CreateScoreHandler : IRequestHandler<CreateScoreCommand, Err
 
     public async Task<ErrorOr<Score>> Handle(CreateScoreCommand request, CancellationToken cancellationToken)
     {
-        ErrorOr<object?> playerCheckDetails = await CheckPlayerDetails(request.PlayerDetails, cancellationToken);
-
         ScoreBoard? scoreBoard = await DoesScoreBoardExist(request.ScoreBoardId, cancellationToken);
 
-        Player? existingPlayer = (Player?)playerCheckDetails.Value ?? null;
+        if (scoreBoard is null) return Errors.ScoreBoard.NotFound;
 
-        return scoreBoard is null ? (ErrorOr<Score>)Errors.ScoreBoard.NotFound : await CreateEntitiesAndSave(request, scoreBoard, existingPlayer);
-    }
+        Player? existingPlayer = await CheckForExistingPlayer(request.PlayerDetails, cancellationToken);
 
-    private async Task<ErrorOr<object?>> CheckPlayerDetails(PlayerName playerDetails, CancellationToken cancellationToken)
-    {
-        Expression<Func<Player, bool>> filter = p => p.PreferredPlayerName == playerDetails.PreferredPlayerName;
+        if (existingPlayer is null)
+        {
+            var isNameAllowed = await CheckPlayerNameDetails(request, cancellationToken);
 
-        // TODO: Call new method to check both default name and preferred names.
-        Player? foundPlayer = await _playerRepository.GetByName(filter, cancellationToken);
+            return !isNameAllowed ? (ErrorOr<Score>)Errors.Player.PlayerNameInvalid : await CreateScoreForNewPlayer(request, scoreBoard, cancellationToken);
+        }
 
-        if (foundPlayer is not null) return foundPlayer;
-
-        // TODO: If player preferred name is empty, bypass this.
-        if (string.IsNullOrWhiteSpace(playerDetails.PreferredPlayerName)) return foundPlayer;
-
-        // TODO: If player is not found check name rules.
-        var isNameApproved = await _blackListService.IsWordApproved(playerDetails.PreferredPlayerName, cancellationToken);
-
-        // TODO: Figure out how to handle the return.
-        return isNameApproved ? foundPlayer : (ErrorOr<Score>)Errors.Player.PlayerNameInvalid;
+        return await CreateScoreForExistingPlayer(request, scoreBoard, existingPlayer, cancellationToken);
     }
 
     private async Task<ScoreBoard?> DoesScoreBoardExist(string scoreBoardId, CancellationToken cancellationToken)
@@ -78,16 +66,47 @@ public sealed class CreateScoreHandler : IRequestHandler<CreateScoreCommand, Err
         return await _scoreBoardRepository.GetById(scoreBoardGuid, cancellationToken);
     }
 
-    private Task<ErrorOr<Score>> CreateEntitiesAndSave(CreateScoreCommand request, ScoreBoard scoreBoard, Player? existingPlayer)
+    private async Task<Player?> CheckForExistingPlayer(PlayerName playerDetails, CancellationToken cancellationToken)
     {
-        // TODO: If existing player is null create new one entity.
+        Expression<Func<Player, bool>> filter = p => p.PreferredPlayerName == playerDetails.PreferredPlayerName || p.DefaultPlayerName == playerDetails.DefaultPlayerName;
 
-        // TODO: Create score entity
+        return await _playerRepository.GetByName(filter, cancellationToken);
+    }
 
-        // TODO: Save changes
+    private async Task<bool> CheckPlayerNameDetails(CreateScoreCommand request, CancellationToken cancellationToken)
+    {
+        return string.IsNullOrWhiteSpace(request.PlayerDetails.PreferredPlayerName)
+            ? true
+            : await _blackListService.IsWordApproved(request.PlayerDetails.PreferredPlayerName, cancellationToken);
+    }
 
-        // TODO: Return entity
+    private async Task<ErrorOr<Score>> CreateScoreForNewPlayer(CreateScoreCommand request, ScoreBoard scoreBoard, CancellationToken cancellationToken)
+    {
+        DateTimeOffset creationDate = _dateTimeProvider.Now;
 
-        throw new NotImplementedException();
+        var newPlayer = new Player(Guid.NewGuid(), "", "", true, creationDate, request.CreatedBy);
+
+        _playerRepository.Create(newPlayer);
+
+        var score = new Score(Guid.NewGuid(), request.Value, scoreBoard.Id, newPlayer.Id, creationDate, request.CreatedBy);
+
+        _scoreRepository.Create(score);
+
+        var hasErrorOccurred = await _unitOfWork.SaveAsync(cancellationToken);
+
+        return hasErrorOccurred ? (ErrorOr<Score>)Errors.Score.CreateError : (ErrorOr<Score>)score;
+    }
+
+    private async Task<ErrorOr<Score>> CreateScoreForExistingPlayer(CreateScoreCommand request, ScoreBoard scoreBoard, Player existingPlayer, CancellationToken cancellationToken)
+    {
+        DateTimeOffset creationDate = _dateTimeProvider.Now;
+
+        var score = new Score(Guid.NewGuid(), request.Value, scoreBoard.Id, existingPlayer.Id, creationDate, request.CreatedBy);
+
+        _scoreRepository.Create(score);
+
+        var hasErrorOccurred = await _unitOfWork.SaveAsync(cancellationToken);
+
+        return hasErrorOccurred ? (ErrorOr<Score>)Errors.Score.CreateError : (ErrorOr<Score>)score;
     }
 }
