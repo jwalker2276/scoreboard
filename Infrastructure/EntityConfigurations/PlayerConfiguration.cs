@@ -13,9 +13,6 @@ internal class PlayerConfiguration : IEntityTypeConfiguration<Player>
         builder.Property(x => x.Id)
             .IsRequired();
 
-        builder.HasIndex(x => x.PreferredPlayerName)
-            .IsUnique();
-
         builder.Property(x => x.PreferredPlayerName)
             .HasMaxLength(256);
 
