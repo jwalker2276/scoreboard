@@ -2,9 +2,9 @@
 using Application.Persistence;
 using Application.Services;
 using Domain.Errors;
+using Domain.GameModels.Entities;
 using Domain.PlayerModels.Entities;
 using Domain.PlayerModels.ValueObjects;
-using Domain.ScoreBoardModels.Entities;
 using Domain.ScoreModels.Entities;
 using ErrorOr;
 using MediatR;
@@ -18,7 +18,7 @@ public sealed class CreateScoreHandler : IRequestHandler<CreateScoreCommand, Err
 
     private readonly IPlayerRepository _playerRepository;
 
-    private readonly IRepository<ScoreBoard> _scoreBoardRepository;
+    private readonly IRepository<Game> _gameRespository;
 
     private readonly IUnitOfWork _unitOfWork;
 
@@ -28,14 +28,14 @@ public sealed class CreateScoreHandler : IRequestHandler<CreateScoreCommand, Err
 
     public CreateScoreHandler(IRepository<Score> scoreRepository,
                               IPlayerRepository playerRepository,
-                              IRepository<ScoreBoard> scoreBoardRepository,
+                              IRepository<Game> gameRepository,
                               IUnitOfWork unitOfWork,
                               IBlackListService blackListService,
                               IDateTimeProvider dateTimeProvider)
     {
         _scoreRepository = scoreRepository;
         _playerRepository = playerRepository;
-        _scoreBoardRepository = scoreBoardRepository;
+        _gameRespository = gameRepository;
         _unitOfWork = unitOfWork;
         _blackListService = blackListService;
         _dateTimeProvider = dateTimeProvider;
@@ -43,9 +43,9 @@ public sealed class CreateScoreHandler : IRequestHandler<CreateScoreCommand, Err
 
     public async Task<ErrorOr<Score>> Handle(CreateScoreCommand request, CancellationToken cancellationToken)
     {
-        ScoreBoard? scoreBoard = await DoesScoreBoardExist(request.ScoreBoardId, cancellationToken);
+        Game? game = await DoesGameExist(request.GameId, cancellationToken);
 
-        if (scoreBoard is null) return Errors.ScoreBoard.NotFound;
+        if (game is null) return Errors.Game.NotFound;
 
         Player? existingPlayer = await CheckForExistingPlayer(request.PlayerDetails, cancellationToken);
 
@@ -53,17 +53,17 @@ public sealed class CreateScoreHandler : IRequestHandler<CreateScoreCommand, Err
         {
             var isNameAllowed = await CheckPlayerNameDetails(request, cancellationToken);
 
-            return !isNameAllowed ? (ErrorOr<Score>)Errors.Player.PlayerNameInvalid : await CreateScoreForNewPlayer(request, scoreBoard, cancellationToken);
+            return !isNameAllowed ? (ErrorOr<Score>)Errors.Player.PlayerNameInvalid : await CreateScoreForNewPlayer(request, game, cancellationToken);
         }
 
-        return await CreateScoreForExistingPlayer(request, scoreBoard, existingPlayer, cancellationToken);
+        return await CreateScoreForExistingPlayer(request, game, existingPlayer, cancellationToken);
     }
 
-    private async Task<ScoreBoard?> DoesScoreBoardExist(string scoreBoardId, CancellationToken cancellationToken)
+    private async Task<Game?> DoesGameExist(string id, CancellationToken cancellationToken)
     {
-        Guid.TryParse(scoreBoardId, out Guid scoreBoardGuid);
+        Guid.TryParse(id, out Guid gameId);
 
-        return await _scoreBoardRepository.GetById(scoreBoardGuid, cancellationToken);
+        return await _gameRespository.GetById(gameId, cancellationToken);
     }
 
     private async Task<Player?> CheckForExistingPlayer(PlayerName playerDetails, CancellationToken cancellationToken)
@@ -80,7 +80,7 @@ public sealed class CreateScoreHandler : IRequestHandler<CreateScoreCommand, Err
             : await _blackListService.IsWordApproved(request.PlayerDetails.PreferredPlayerName, cancellationToken);
     }
 
-    private async Task<ErrorOr<Score>> CreateScoreForNewPlayer(CreateScoreCommand request, ScoreBoard scoreBoard, CancellationToken cancellationToken)
+    private async Task<ErrorOr<Score>> CreateScoreForNewPlayer(CreateScoreCommand request, Game game, CancellationToken cancellationToken)
     {
         DateTimeOffset creationDate = _dateTimeProvider.Now;
 
@@ -88,7 +88,7 @@ public sealed class CreateScoreHandler : IRequestHandler<CreateScoreCommand, Err
 
         _playerRepository.Create(newPlayer);
 
-        var score = new Score(Guid.NewGuid(), request.Value, scoreBoard.Id, newPlayer.Id, creationDate, request.CreatedBy);
+        var score = new Score(Guid.NewGuid(), request.Value, game.Id, newPlayer.Id, creationDate, request.CreatedBy);
 
         _scoreRepository.Create(score);
 
@@ -97,11 +97,11 @@ public sealed class CreateScoreHandler : IRequestHandler<CreateScoreCommand, Err
         return hasErrorOccurred ? (ErrorOr<Score>)Errors.Score.CreateError : (ErrorOr<Score>)score;
     }
 
-    private async Task<ErrorOr<Score>> CreateScoreForExistingPlayer(CreateScoreCommand request, ScoreBoard scoreBoard, Player existingPlayer, CancellationToken cancellationToken)
+    private async Task<ErrorOr<Score>> CreateScoreForExistingPlayer(CreateScoreCommand request, Game game, Player existingPlayer, CancellationToken cancellationToken)
     {
         DateTimeOffset creationDate = _dateTimeProvider.Now;
 
-        var score = new Score(Guid.NewGuid(), request.Value, scoreBoard.Id, existingPlayer.Id, creationDate, request.CreatedBy);
+        var score = new Score(Guid.NewGuid(), request.Value, game.Id, existingPlayer.Id, creationDate, request.CreatedBy);
 
         _scoreRepository.Create(score);
 

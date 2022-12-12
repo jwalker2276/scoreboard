@@ -1,5 +1,4 @@
 ﻿using Api.Contracts.PlayerDTO.PlayerResponseModels;
-using Domain.PlayerModels.Entities;
 using Domain.ScoreModels.Entities;
 
 namespace Api.Contracts.ScoreDTO.ScoreResponseModels;
@@ -12,10 +11,10 @@ public class ScoreResponse
 
     public PlayerResponse Player { get; init; }
 
-    public ScoreResponse(Guid gameId, Player player, Score score)
+    public ScoreResponse(Score score)
     {
-        GameId = gameId.ToString();
         Score = new ScoreObject(score);
-        Player = new PlayerResponse(player);
+        GameId = score.GameId.ToString();
+        Player = new PlayerResponse(score.Player);
     }
 }

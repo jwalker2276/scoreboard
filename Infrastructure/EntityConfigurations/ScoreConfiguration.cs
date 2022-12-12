@@ -18,7 +18,7 @@ internal class ScoreConfiguration : IEntityTypeConfiguration<Score>
             .HasColumnOrder(1)
             .IsRequired();
 
-        builder.Property(x => x.ScoreBoardId)
+        builder.Property(x => x.GameId)
             .HasColumnOrder(2)
             .IsRequired();
 

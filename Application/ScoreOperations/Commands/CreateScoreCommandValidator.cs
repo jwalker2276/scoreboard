@@ -21,7 +21,7 @@ public class CreateScoreCommandValidator : AbstractValidator<CreateScoreCommand>
             .Must(IsOneOfTheNamesValid)
             .WithMessage("Add least one of the player names must be valid");
 
-        RuleFor(s => s.ScoreBoardId)
+        RuleFor(s => s.GameId)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .Must(ValidationHelper.IsAGuid);
