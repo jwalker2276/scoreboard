@@ -32,7 +32,7 @@ public sealed class CheckIfNameExistHandler : IRequestHandler<CheckIfNameExistQu
 
         var isNameApproved = await _blackListService.IsWordApproved(query.Name, cancellationToken);
 
-        var newMockPlayer = new Player(Guid.Empty, "", query.Name, isNameApproved, DateTimeOffset.MinValue, "");
+        var newMockPlayer = new Player(Guid.Empty, query.Name, isNameApproved, DateTimeOffset.MinValue, "");
 
         return newMockPlayer;
     }

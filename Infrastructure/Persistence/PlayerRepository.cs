@@ -19,7 +19,7 @@ public class PlayerRepository : IPlayerRepository
 
     public void Create(Player entity)
     {
-        throw new NotImplementedException();
+        _dbPlayers.Add(entity);
     }
 
     public Task<List<Player>> GetAll(CancellationToken cancellationToken)

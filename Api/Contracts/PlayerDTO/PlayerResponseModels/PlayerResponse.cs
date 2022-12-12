@@ -15,6 +15,6 @@ public class PlayerResponse
     {
         return !string.IsNullOrWhiteSpace(playerData.PreferredPlayerName) && playerData.IsPlayerNameApproved
             ? playerData.PreferredPlayerName
-            : playerData.DefaultPlayerName;
+            : "Player";
     }
 }

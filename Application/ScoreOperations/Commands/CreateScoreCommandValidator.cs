@@ -34,6 +34,6 @@ public class CreateScoreCommandValidator : AbstractValidator<CreateScoreCommand>
 
     private bool IsOneOfTheNamesValid(PlayerName playerDetails)
     {
-        return ValidationHelper.IsOneOfTheStringsValid(playerDetails.DefaultPlayerName, playerDetails.PreferredPlayerName);
+        return ValidationHelper.IsOneOfTheStringsValid("Player", playerDetails.PreferredPlayerName);
     }
 }

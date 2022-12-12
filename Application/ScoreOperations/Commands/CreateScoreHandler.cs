@@ -68,7 +68,7 @@ public sealed class CreateScoreHandler : IRequestHandler<CreateScoreCommand, Err
 
     private async Task<Player?> CheckForExistingPlayer(PlayerName playerDetails, CancellationToken cancellationToken)
     {
-        Expression<Func<Player, bool>> filter = p => p.PreferredPlayerName == playerDetails.PreferredPlayerName || p.DefaultPlayerName == playerDetails.DefaultPlayerName;
+        Expression<Func<Player, bool>> filter = p => p.PreferredPlayerName == playerDetails.PreferredPlayerName;
 
         return await _playerRepository.GetByName(filter, cancellationToken);
     }
@@ -84,7 +84,7 @@ public sealed class CreateScoreHandler : IRequestHandler<CreateScoreCommand, Err
     {
         DateTimeOffset creationDate = _dateTimeProvider.Now;
 
-        var newPlayer = new Player(Guid.NewGuid(), "", "", true, creationDate, request.CreatedBy);
+        var newPlayer = new Player(Guid.NewGuid(), "", true, creationDate, request.CreatedBy);
 
         _playerRepository.Create(newPlayer);
 
