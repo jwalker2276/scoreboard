@@ -38,6 +38,6 @@ public class ScoreRepository : IRepository<Score>
 
     public async Task<Score?> GetById(Guid id, CancellationToken cancellationToken)
     {
-        return await _dbScores.FindAsync(new object[] { id }, cancellationToken);
+        return await _dbScores.Include(score => score.Player).FirstOrDefaultAsync(score => score.Id == id);
     }
 }

@@ -1,10 +1,9 @@
 ﻿using Application.Common.Validation;
-using Application.GameOperations.Queries.GetbyId;
 using FluentValidation;
 
 namespace Application.ScoreOperations.Queries.GetById;
 
-public sealed class GetScoreByIdQueryValidator : AbstractValidator<GetGameByIdQuery>
+public sealed class GetScoreByIdQueryValidator : AbstractValidator<GetScoreByIdQuery>
 {
     public GetScoreByIdQueryValidator()
     {

@@ -84,7 +84,7 @@ public sealed class CreateScoreHandler : IRequestHandler<CreateScoreCommand, Err
     {
         DateTimeOffset creationDate = _dateTimeProvider.Now;
 
-        var newPlayer = new Player(Guid.NewGuid(), "", true, creationDate, request.CreatedBy);
+        var newPlayer = new Player(Guid.NewGuid(), request.PlayerDetails.PreferredPlayerName, true, creationDate, request.CreatedBy);
 
         _playerRepository.Create(newPlayer);
 
