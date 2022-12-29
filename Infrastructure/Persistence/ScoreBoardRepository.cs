@@ -27,7 +27,9 @@ public class ScoreBoardRepository : IRepository<ScoreBoard>
 
     public async Task<ScoreBoard?> GetById(Guid id, CancellationToken cancellationToken)
     {
-        return await _dbScoreBoards.FindAsync(new object[] { id }, cancellationToken);
+        return await _dbScoreBoards
+            .FirstOrDefaultAsync(scoreboard => scoreboard.Id == id, cancellationToken);
+
     }
     public Task<ScoreBoard?> FindAndUpdate(ScoreBoard updatedEntity, CancellationToken cancellationToken)
     {

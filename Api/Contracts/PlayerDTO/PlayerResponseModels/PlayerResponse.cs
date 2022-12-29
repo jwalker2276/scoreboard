@@ -4,11 +4,11 @@ namespace Api.Contracts.PlayerDTO.PlayerResponseModels;
 
 public class PlayerResponse
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string PublicName { get; set; } = string.Empty;
 
     public PlayerResponse(Player player)
     {
-        DisplayName = GetDisplayNameValue(player);
+        PublicName = GetDisplayNameValue(player);
     }
 
     private static string GetDisplayNameValue(Player playerData)

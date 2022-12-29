@@ -4,13 +4,13 @@ namespace Api.Contracts.ScoreDTO.ScoreResponseModels;
 
 public class ScoreObject
 {
-    public double Score { get; init; }
+    public double Value { get; init; }
 
     public DateTimeOffset RecordDate { get; init; }
 
     public ScoreObject(Score score)
     {
-        Score = score.Value;
+        Value = score.Value;
         RecordDate = score.CreationDate;
     }
 }
