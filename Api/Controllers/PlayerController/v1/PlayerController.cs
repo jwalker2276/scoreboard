@@ -39,7 +39,7 @@ public class PlayerController : ApiController
 
     private IActionResult GetOkSuccessAction(Player playerData, string messageForResponse)
     {
-        var nameCheckData = new CheckPlayerNameResponse(playerData.IsPlayerNameApproved);
+        var nameCheckData = new CheckPlayerNameResponse(playerData);
 
         return Ok(new StandardResponse<CheckPlayerNameResponse>(nameCheckData, messageForResponse));
     }

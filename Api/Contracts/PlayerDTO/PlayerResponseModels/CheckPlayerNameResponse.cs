@@ -1,11 +1,17 @@
-﻿namespace Api.Contracts.PlayerDTO.PlayerResponseModels;
+﻿using Domain.PlayerModels.Entities;
+
+namespace Api.Contracts.PlayerDTO.PlayerResponseModels;
 
 public class CheckPlayerNameResponse
 {
     public bool IsNameAvailable { get; init; }
 
-    public CheckPlayerNameResponse(bool isNameAvailable)
+    public bool IsNameApproved { get; init; }
+
+    public CheckPlayerNameResponse(Player player)
     {
-        IsNameAvailable = isNameAvailable;
+        IsNameAvailable = player.Id == Guid.Empty ? true : false;
+
+        IsNameApproved = player.IsPlayerNameApproved;
     }
 }
