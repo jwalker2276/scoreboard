@@ -29,6 +29,8 @@ internal class ScoreBoardConfiguration : IEntityTypeConfiguration<ScoreBoard>
 
         builder.Property(x => x.CreatedBy)
             .IsRequired()
-            .HasMaxLength(256); ;
+            .HasMaxLength(256);
+
+        builder.Ignore(x => x.Scores);
     }
 }
