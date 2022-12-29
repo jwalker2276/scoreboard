@@ -3,6 +3,7 @@ using Api.Contracts.ScoreDTO.ScoreRequestModels;
 using Api.Contracts.ScoreDTO.ScoreResponseModels;
 using Api.Controllers.Common;
 using Application.ScoreOperations.Commands;
+using Application.ScoreOperations.Queries.GetById;
 using Domain.PlayerModels.ValueObjects;
 using Domain.ScoreModels.Entities;
 using ErrorOr;
@@ -46,6 +47,21 @@ public class ScoreController : ApiController
     [HttpGet("{id}")]
     public async Task<IActionResult> GetScore(string id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var query = new GetScoreByIdQuery(id);
+
+        ErrorOr<Score> queryResult = await _mediator.Send(query, cancellationToken);
+
+        var messageForResponse = "Successfully found score.";
+
+        return queryResult.Match(
+            scoreData => GetOkScoreSuccessAction(scoreData, messageForResponse),
+            errors => Problem(errors));
+    }
+
+    private IActionResult GetOkScoreSuccessAction(Score scoreData, string messageForResponse)
+    {
+        var responseData = new ScoreResponse(scoreData);
+
+        return Ok(new StandardResponse<ScoreResponse>(responseData, messageForResponse));
     }
 }

@@ -36,8 +36,8 @@ public class ScoreRepository : IRepository<Score>
         throw new NotImplementedException();
     }
 
-    public Task<Score?> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<Score?> GetById(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return await _dbScores.FindAsync(new object[] { id }, cancellationToken);
     }
 }
