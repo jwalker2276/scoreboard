@@ -10,10 +10,6 @@ internal class ScoreBoardConfiguration : IEntityTypeConfiguration<ScoreBoard>
     {
         builder.ToTable("ScoreBoards");
 
-        builder.HasOne(sb => sb.Game)
-            .WithOne(g => g.ScoreBoard)
-            .HasForeignKey<ScoreBoard>(sb => sb.GameId);
-
         builder.Property(x => x.Id)
             .IsRequired();
 

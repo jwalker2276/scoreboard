@@ -15,14 +15,12 @@ public class EntityGenerator
     public Game GetMockGame()
     {
         Guid mockId = _faker.Random.Guid();
-        Guid mockScoreBoardId = _faker.Random.Guid();
         var mockName = _faker.Random.Word();
         var mockIsActive = _faker.Random.Bool();
         var mockCreatedBy = _faker.Name.FullName();
         DateTimeOffset mockCreationDate = _faker.Date.RecentOffset();
 
         var mockGame = new Game(mockId, mockName, mockIsActive, mockCreatedBy, mockCreationDate);
-        mockGame.UpdateScoreBoardId(mockScoreBoardId);
 
         return mockGame;
     }

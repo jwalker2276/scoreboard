@@ -42,8 +42,6 @@ public class CreateScoreBoardHandler : IRequestHandler<CreateScoreBoardCommand, 
 
         ScoreBoard scoreBoard = CreateScoreBoardFromCommandData(command, foundGame.Id);
 
-        await AddScoreBoardIdToGame(scoreBoard, foundGame, cancellationToken);
-
         await _unitOfWork.SaveAsync(cancellationToken);
 
         var hasErrorOccurred = await _unitOfWork.SaveAsync(cancellationToken);
@@ -74,12 +72,5 @@ public class CreateScoreBoardHandler : IRequestHandler<CreateScoreBoardCommand, 
         Guid.TryParse(command.GameId, out Guid gameId);
 
         return await _gameRepository.GetById(gameId, cancellationToken);
-    }
-
-    private async Task AddScoreBoardIdToGame(ScoreBoard scoreBoard, Game foundGame, CancellationToken cancellationToken)
-    {
-        foundGame.UpdateScoreBoardId(scoreBoard.Id);
-
-        await _gameRepository.FindAndUpdate(foundGame, cancellationToken);
     }
 }
