@@ -20,6 +20,7 @@ public class ScoreBoardRepository : IRepository<ScoreBoard>
     {
         _dbScoreBoards.Add(entity);
     }
+
     public Task<List<ScoreBoard>> GetAll(CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
@@ -27,10 +28,9 @@ public class ScoreBoardRepository : IRepository<ScoreBoard>
 
     public async Task<ScoreBoard?> GetById(Guid id, CancellationToken cancellationToken)
     {
-        return await _dbScoreBoards
-            .FirstOrDefaultAsync(scoreboard => scoreboard.Id == id, cancellationToken);
-
+        return await _dbScoreBoards.FirstOrDefaultAsync(sb => sb.Id == id, cancellationToken);
     }
+
     public Task<ScoreBoard?> FindAndUpdate(ScoreBoard updatedEntity, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();

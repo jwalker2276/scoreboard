@@ -1,10 +1,11 @@
 ﻿using Application.Persistence;
+using Domain.ScoreBoardModels.Entities;
 using Domain.ScoreModels.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
-public class ScoreRepository : IRepository<Score>
+public class ScoreRepository : IScoreRepository
 {
     private readonly DatabaseContext _databaseContext;
 
@@ -39,5 +40,15 @@ public class ScoreRepository : IRepository<Score>
     public async Task<Score?> GetById(Guid id, CancellationToken cancellationToken)
     {
         return await _dbScores.Include(score => score.Player).FirstOrDefaultAsync(score => score.Id == id, cancellationToken);
+    }
+
+    public async Task<List<Score>> GetScoreBoardScores(ScoreBoard scoreboard, CancellationToken cancellation)
+    {
+        return await _dbScores
+            .Include(score => score.Player)
+            .Where(score => score.GameId == scoreboard.GameId)
+            .OrderByDescending(score => score.Value)
+            .Take(scoreboard.MaxNumberOfScores)
+            .ToListAsync(cancellation);
     }
 }

@@ -163,7 +163,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PlayersId");
 
-                    b.ToTable("GamePlayer");
+                    b.ToTable("GamePlayer", (string)null);
                 });
 
             modelBuilder.Entity("Infrastructure.CustomModels.BlackListWord", b =>

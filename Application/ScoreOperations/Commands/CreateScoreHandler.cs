@@ -14,7 +14,7 @@ namespace Application.ScoreOperations.Commands;
 
 public sealed class CreateScoreHandler : IRequestHandler<CreateScoreCommand, ErrorOr<Score>>
 {
-    private readonly IRepository<Score> _scoreRepository;
+    private readonly IScoreRepository _scoreRepository;
 
     private readonly IPlayerRepository _playerRepository;
 
@@ -26,7 +26,7 @@ public sealed class CreateScoreHandler : IRequestHandler<CreateScoreCommand, Err
 
     private readonly IDateTimeProvider _dateTimeProvider;
 
-    public CreateScoreHandler(IRepository<Score> scoreRepository,
+    public CreateScoreHandler(IScoreRepository scoreRepository,
                               IPlayerRepository playerRepository,
                               IRepository<Game> gameRepository,
                               IUnitOfWork unitOfWork,

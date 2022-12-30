@@ -1,6 +1,7 @@
 ﻿using Application.Persistence;
 using Domain.Errors;
 using Domain.ScoreBoardModels.Entities;
+using Domain.ScoreModels.Entities;
 using ErrorOr;
 using MediatR;
 
@@ -10,9 +11,12 @@ public class GetScoreBoardByIdHandler : IRequestHandler<GetScoreBoardByIdQuery, 
 {
     private readonly IRepository<ScoreBoard> _scoreBoardRepository;
 
-    public GetScoreBoardByIdHandler(IRepository<ScoreBoard> scoreBoardRepository)
+    private readonly IScoreRepository _scoreRepository;
+
+    public GetScoreBoardByIdHandler(IRepository<ScoreBoard> scoreBoardRepository, IScoreRepository scoreRepository)
     {
         _scoreBoardRepository = scoreBoardRepository;
+        _scoreRepository = scoreRepository;
     }
 
     public async Task<ErrorOr<ScoreBoard>> Handle(GetScoreBoardByIdQuery request, CancellationToken cancellationToken)
@@ -21,6 +25,18 @@ public class GetScoreBoardByIdHandler : IRequestHandler<GetScoreBoardByIdQuery, 
 
         ScoreBoard? scoreBoard = await _scoreBoardRepository.GetById(scoreBoardId, cancellationToken);
 
-        return scoreBoard is null ? Errors.ScoreBoard.NotFound : scoreBoard;
+        if (scoreBoard is null)
+        {
+            return Errors.ScoreBoard.NotFound;
+        }
+
+        List<Score> scores = await _scoreRepository.GetScoreBoardScores(scoreBoard, cancellationToken);
+
+        if (scores.Any())
+        {
+            scoreBoard.Scores = scores;
+        }
+
+        return scoreBoard;
     }
 }

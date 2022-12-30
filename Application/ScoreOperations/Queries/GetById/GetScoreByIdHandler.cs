@@ -8,9 +8,9 @@ namespace Application.ScoreOperations.Queries.GetById;
 
 public sealed class GetScoreByIdHandler : IRequestHandler<GetScoreByIdQuery, ErrorOr<Score>>
 {
-    private readonly IRepository<Score> _scoreRepository;
+    private readonly IScoreRepository _scoreRepository;
 
-    public GetScoreByIdHandler(IRepository<Score> scoreRepository)
+    public GetScoreByIdHandler(IScoreRepository scoreRepository)
     {
         _scoreRepository = scoreRepository;
     }

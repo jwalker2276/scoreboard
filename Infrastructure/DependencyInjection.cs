@@ -3,7 +3,6 @@ using Application.Persistence;
 using Application.Services;
 using Domain.GameModels.Entities;
 using Domain.ScoreBoardModels.Entities;
-using Domain.ScoreModels.Entities;
 using Infrastructure.Dates;
 using Infrastructure.Options;
 using Infrastructure.Persistence;
@@ -39,7 +38,7 @@ public static class DependencyInjection
         services.AddScoped<IRepository<Game>, GameRepository>();
         services.AddScoped<IRepository<ScoreBoard>, ScoreBoardRepository>();
         services.AddScoped<IPlayerRepository, PlayerRepository>();
-        services.AddScoped<IRepository<Score>, ScoreRepository>();
+        services.AddScoped<IScoreRepository, ScoreRepository>();
 
         services.AddScoped<IBlackListService, BlackListRepository>();
 
