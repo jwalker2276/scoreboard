@@ -1,5 +1,4 @@
 ﻿using Domain.Abstractions;
-using Domain.GameModels.Entities;
 using Domain.ScoreModels.Entities;
 
 namespace Domain.PlayerModels.Entities;
@@ -15,8 +14,6 @@ public sealed class Player : PlayerBase
         base(id, preferredPlayerName, isPlayerNameApproved, creationDate, createdBy)
     {
     }
-
-    public ICollection<Game> Games { get; set; }
 
     public ICollection<Score> Scores { get; set; }
 }

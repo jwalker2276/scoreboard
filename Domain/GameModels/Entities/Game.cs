@@ -1,5 +1,4 @@
 using Domain.Abstractions;
-using Domain.PlayerModels.Entities;
 using Domain.ScoreBoardModels.Entities;
 using Domain.ScoreModels.Entities;
 
@@ -20,6 +19,4 @@ public sealed class Game : GameBase
     public ICollection<Score>? Scores { get; set; }
 
     public ICollection<ScoreBoard>? ScoreBoards { get; set; }
-
-    public ICollection<Player>? Players { get; set; }
 }
